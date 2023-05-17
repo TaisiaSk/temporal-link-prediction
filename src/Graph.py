@@ -1,10 +1,10 @@
 import numpy as np
 
 class Graph(object):
-    __adjacent_vertices = dict()
-    __edges_info = dict()
+    def __init__(self, file_path : str, timestamp_col : int = 2, skip_first_line : bool = False):        
+        self.__adjacent_vertices = dict()
+        self.__edges_info = dict()
 
-    def __init__(self, file_path : str, timestamp_col : int = 2, skip_first_line : bool = False):
         try:
             with open(file_path, "r") as file:
                 edge_id = 0
