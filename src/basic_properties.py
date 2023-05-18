@@ -156,6 +156,7 @@ def snowball_BFS(v: int, graph: Graph, max_count: int) -> set:
     return visited
 
 # returns list of randomly picked v from vertices
+# сделать сравнение с наличием в выбранных и не удалять!
 def pick_vertexes(vertices: set, count: int) -> list:
     vertexes_copy = list(vertices)
     chosen = list()
@@ -233,7 +234,7 @@ def get_distance_properties(component, graph):
             max_distances.append(bfs_get_counts_of_vertices_on_distance(v, distances, graph))
         return get_metrics_from_distances_list(distances, max_distances)
     # big graph
-   else:
+    else:
         metrics_not_snow = estimate_metrics_not_snow(vertices, graph)
         metric_snow = estimate_metrics_snow(vertices, graph)
         return {'not_stow': metrics_not_snow, 'snow': metric_snow}
@@ -242,7 +243,7 @@ def get_distance_properties(component, graph):
 #graph = Graph(file_path="out .soc-sign-test", timestamp_col=2, skip_first_line=True)
 
 #big
-#graph = Graph(file_path="out.soc-sign-bitcoinalpha", timestamp_col=2, skip_first_line=True)
+#graph = Graph(file_path="out.sx-superuser", timestamp_col=2, skip_first_line=True)
 #comps = get_components(graph)
 #max_comp = find_max_component(comps)
 #print(get_distance_properties(max_comp, graph))
