@@ -1,3 +1,5 @@
+import numpy
+
 from Graph import Graph
 from collections import deque
 import random
@@ -11,7 +13,6 @@ import math
 
 # dencity
 # WARNING: not for multigraph!
-# TODO: multigraph?
 def get_dencity(graph: Graph) -> float:
     n = graph.number_of_vertices()
     return 1.0 * graph.number_of_edges() / ( n * (n - 1) / 2)
@@ -74,7 +75,6 @@ def add_to_distances_list(d: int, count: int, distances: list):
 # distances = list (array), i-th element represents count of vertices on i+1 distance
 # returns eccentricity of given vertex
 # WARNING: changes (distances)
-# TODO: possible to check (while) with len(visited) == size, not len(q). Less loops
 def bfs_get_counts_of_vertices_on_distance(v: int, distances: list, graph: Graph) -> int:
     visited = set()
     visited.add(v)
@@ -119,12 +119,19 @@ def get_component_vertices(v: int, graph: Graph) -> set:
 # distances = list (array), i-th element represents count of vertices on i+1 distance
 # max_distances = not sorted list of eccentricities
 # returns d_metrics = {'radius', 'diameter', 'perc90'}
+# TODO: percentile is int (checked with numpy) while in dataset properties it is float???
 def get_metrics_from_distances_list(distances: list, max_distances: list) -> dict:
     d_metrics = {'radius': 0, 'diameter': 0, 'perc90': '0'}
 
     max_distances.sort()
     d_metrics['radius'] = max_distances[0]
     d_metrics['diameter'] = max_distances[-1]
+
+    #sequence = list()
+    #for d, count in enumerate(distances):
+    #    sequence += [d + 1] * count
+    #perc = numpy.percentile(sequence, 90)
+    #print(perc)
 
     selection_size = sum(distances)
     idx_proc90 = math.ceil(selection_size * 0.9)
@@ -146,13 +153,14 @@ def snowball_BFS(v: int, graph: Graph, max_count: int) -> set:
     while (len(q) != 0):
         v = q.popleft()
         adj = graph.adj(v)
-        count_adj = len(adj)
+        if (len(visited) >= max_count):
+            return visited
         for node in adj:
             if (node not in visited):
                 visited.add(node)
                 q.append(node)
-        if (count_adj + len(visited) > max_count):
-            return visited
+                if (len(visited) >= max_count):
+                    return visited
     return visited
 
 # returns list of randomly picked v from vertices
@@ -180,10 +188,15 @@ def estimate_metrics_not_snow(vertices: set, graph: Graph) -> dict:
     diameter = 0
     perc90 = 0
     for i in range(0, loop_count):
+        print(f"loop {i + 1}/{loop_count}")
         chosen = pick_vertexes(vertices, random_count)
-        for v in chosen:
+        for idx, v in enumerate(chosen):
             max_distances.append(bfs_get_counts_of_vertices_on_distance(v, distances, graph))
+            if ((idx + 1) % 100 == 0):
+                print(f"{idx + 1}/{len(chosen)}")
         metrix = get_metrics_from_distances_list(distances, max_distances)
+        print(f"intermediate distance statistics: {distances}")
+        print(f"intermediate metrix: {metrix}")
         radius += metrix['radius']
         diameter += metrix['diameter']
         perc90 += metrix['perc90']
@@ -205,11 +218,16 @@ def estimate_metrics_snow(vertexes, graph):
     diameter = 0
     perc90 = 0
     for i in range(0, snowball_count):
+        print(f"loop {i + 1}/{snowball_count}")
         chosen = pick_vertexes(vertexes, 1)
         vertexes_in_snowboll = (snowball_BFS(chosen[0], graph, random_count))
-        for v in vertexes_in_snowboll:
+        for idx, v in enumerate(vertexes_in_snowboll):
             max_distances.append(bfs_get_counts_of_vertices_on_distance(v, distances, graph))
+            if ((idx + 1) % 100 == 0):
+                print(f"{idx + 1}/{len(vertexes_in_snowboll)}")
         metrix = get_metrics_from_distances_list(distances, max_distances)
+        print(f"intermediate distance statistics: {distances}")
+        print(f"intermediate metrix: {metrix}")
         radius += metrix['radius']
         diameter += metrix['diameter']
         perc90 += metrix['perc90']
@@ -230,12 +248,17 @@ def get_distance_properties(component, graph):
     if (size < small_graph_size):
         distances = list()
         max_distances = list()
-        for v in vertices:
-            max_distances.append(bfs_get_counts_of_vertices_on_distance(v, distances, graph))
+        print("--- start counting distance metrix for small graph")
+        for idx, v in enumerate(vertices):
+            max_distances.append(bfs_get_counts_of_vertices_on_distance(v, size, distances, graph))
+            if ((idx + 1) % 10 == 0):
+                print(f"{idx + 1}/{len(vertices)}")
         return get_metrics_from_distances_list(distances, max_distances)
     # big graph
     else:
+        print("--- start not snow estimation")
         metrics_not_snow = estimate_metrics_not_snow(vertices, graph)
+        print("--- start snow estimation")
         metric_snow = estimate_metrics_snow(vertices, graph)
         return {'not_stow': metrics_not_snow, 'snow': metric_snow}
 
@@ -243,7 +266,8 @@ def get_distance_properties(component, graph):
 #graph = Graph(file_path="out .soc-sign-test", timestamp_col=2, skip_first_line=True)
 
 #big
-#graph = Graph(file_path="out.sx-superuser", timestamp_col=2, skip_first_line=True)
+#graph = Graph(file_path="out.soc-sign-bitcoinotc", timestamp_col=2, skip_first_line=True)
 #comps = get_components(graph)
 #max_comp = find_max_component(comps)
+#print("start count\n")
 #print(get_distance_properties(max_comp, graph))
