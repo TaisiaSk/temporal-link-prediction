@@ -1,25 +1,24 @@
-import numpy as np
-
 class Graph(object):
-    def __init__(self, file_path : str, timestamp_col : int = 2, skip_first_line : bool = False):        
+    def __init__(self, file_path : str, timestamp_col : int = 2, 
+                 number_of_lines_to_skip : int = 0, timestamp_percentile : int = 100):        
         self.__adjacent_vertices = dict()
         self.__edges_info = dict()
 
         try:
             with open(file_path, "r") as file:
                 edge_id = 0
-                if (skip_first_line):
+                for _ in range(0, number_of_lines_to_skip):
                     next(file)
 
                 for line in file:
                     tokens = line.split()
                     v1 = int(tokens[0])
                     v2 = int(tokens[1])
-                    timestamp = tokens[timestamp_col]
+                    timestamp = float(tokens[timestamp_col])
 
                     self.add_edge(v1, v2, edge_id, timestamp)
                     edge_id += 1
-            
+
         except OSError:
             print("Could not open/read file: ", file_path)
 
@@ -32,12 +31,12 @@ class Graph(object):
         return len(self.__adjacent_vertices)
 
 
-    def edges_ids(self):
-        return self.__edges_info.keys()
+    def edges_ids(self) -> set:
+        return set(self.__edges_info.keys())
 
 
-    def vertices(self):
-        return self.__adjacent_vertices.keys()
+    def vertices(self) -> set:
+        return set(self.__adjacent_vertices.keys())
 
 
     def get_edge_info(self, edge_id : int) -> list:
@@ -46,9 +45,9 @@ class Graph(object):
         return None
 
 
-    def adj(self, vertex_id : int):
+    def adj(self, vertex_id : int) -> set:
         if (vertex_id in self.__adjacent_vertices):
-            return self.__adjacent_vertices[vertex_id].keys()
+            return set(self.__adjacent_vertices[vertex_id].keys())
         return None
 
 
@@ -81,7 +80,7 @@ class Graph(object):
         del self.__adjacent_vertices[vertex_id]
         
 
-    def add_edge(self, vertex_id_1 : int, vertex_id_2 : int, edge_id : int, timestamp : int = None):
+    def add_edge(self, vertex_id_1 : int, vertex_id_2 : int, edge_id : int, timestamp : float = None):
         if (edge_id in self.__edges_info):
             raise Exception(f"Such edge id already exists: ", edge_id)
 
@@ -126,3 +125,5 @@ class Graph(object):
         self.__adjacent_vertices[vertex_from][vertex_to].remove(edge_id)
         if (len(self.__adjacent_vertices[vertex_from][vertex_to]) == 0):
             del self.__adjacent_vertices[vertex_from][vertex_to]
+
+        
