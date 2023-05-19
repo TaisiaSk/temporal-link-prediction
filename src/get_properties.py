@@ -59,11 +59,11 @@ def average_clustering(graph: Graph, vertexId: int) -> float:
 
 # Degree assortativity
 def degree_assortativity(graph: Graph) -> float:
-    M = 1 / graph.number_of_edges()
+    edges_count = 0
     vertices = graph.vertices()
     visited = set()
     sum_mult = 0
-    sum_halfsum = 0
+    sum_sum = 0
     sum_sumsquares = 0
 
     for vertex in vertices:
@@ -77,12 +77,15 @@ def degree_assortativity(graph: Graph) -> float:
             curr_degree = len(graph.adj(neighbor))
 
             sum_mult += degree * curr_degree
-            sum_halfsum += 0.5 * (degree + curr_degree)
-            sum_sumsquares += 0.5 * (degree * degree + curr_degree * curr_degree)
+            sum_sum += degree + curr_degree
+            sum_sumsquares += degree ** 2 + curr_degree ** 2
+
+            edges_count += 1
 
         visited.add(vertex)
 
-    arg = M * (sum_halfsum * sum_halfsum)
-    r = (sum_mult - arg) / (sum_sumsquares - arg)
+    M = 1 / edges_count
+    arg = M * ((0.5 * sum_sum) ** 2)
+    r = (sum_mult - arg) / (0.5 * sum_sumsquares - arg)
 
     return r
