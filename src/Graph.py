@@ -90,14 +90,14 @@ class Graph(object):
 
     def add_vertex(self, vertex_id : int):
         if (vertex_id is None) or (vertex_id < 0):
-            raise Exception(f"Vertex id is invalid: ", vertex_id)
+            raise Exception(f"Vertex id is invalid: " + str(vertex_id))
         if not (vertex_id in self.__adjacent_vertices):
             self.__adjacent_vertices[vertex_id] = dict() 
 
 
     def remove_vertex(self, vertex_id : int):
         if (vertex_id is None) or (vertex_id < 0):
-            raise Exception(f"Vertex id is invalid: ", vertex_id)
+            raise Exception(f"Vertex id is invalid: " + str(vertex_id))
         if not (vertex_id in self.__adjacent_vertices):
             return
 
@@ -112,7 +112,7 @@ class Graph(object):
 
     def add_edge(self, vertex_id_1 : int, vertex_id_2 : int, edge_id : int, timestamp : float = None):
         if (edge_id in self.__edges_info):
-            raise Exception(f"Such edge id already exists: ", edge_id)
+            raise Exception(f"Such edge id already exists: " + str(edge_id))
 
         self.add_vertex(vertex_id_1)
         self.add_vertex(vertex_id_2)
@@ -125,7 +125,7 @@ class Graph(object):
 
     def remove_edge(self, edge_id : int):
         if (edge_id is None) or (edge_id < 0):
-            raise Exception(f"Edge id is invalid: ", edge_id)
+            raise Exception(f"Edge id is invalid: " + str(edge_id))
         
         if (edge_id in self.__edges_info):
             vertex_id_1 = self.__edges_info[edge_id][1]
@@ -159,7 +159,7 @@ class Graph(object):
 
     def __filter(self, timestamp_filter : int):
         if (timestamp_filter < 0 or timestamp_filter > 100):
-            raise Exception(f"Required filter value is out of range: ", timestamp_filter)
+            raise Exception(f"Required filter value is out of range: " + str(timestamp_filter))
         
         max = self.max_timestamp()
         min = self.min_timestamp()
