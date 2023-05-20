@@ -37,18 +37,17 @@ def task_4(graph : Graph) -> tuple:
     values = (coefficient,)
     return heading, values
 
-def results_to_console(graph : Graph, task_number : int, table_len : int = 100) -> None:
-    function_name = f'task_{task_number}'
-    heading, values = eval(function_name)(graph)
+def results_to_console(graph : Graph, function : callable, table_len : int = 100) -> None:
+    heading, values = function(graph)
     print(table_str(heading, values, table_len))
 
 
 def main() -> None:
     graph = Graph(file_path='../data/soc-sign-bitcoinotc.tsv', timestamp_col=3, number_of_lines_to_skip=2)
 
-    tasks_to_output = {1, 2, 3, 4}
-    for task_number in tasks_to_output:
-        results_to_console(graph, task_number, table_len=90)
+    tasks_to_output = {task_1, task_2, task_3, task_3}
+    for task in tasks_to_output:
+        results_to_console(graph, task, table_len=100)
 
 
 main()
