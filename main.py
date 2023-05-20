@@ -1,6 +1,6 @@
+from src.graph.Graph import Graph
+from src.output.table_maker import table_str
 
-from graph.graph import Graph
-from output.table_maker import table_str
 
 def task_1(graph : Graph) -> tuple:
     vertices = graph.number_of_vertices()
@@ -26,7 +26,7 @@ def task_2(graph : Graph) -> tuple:
 def task_3(graph : Graph) -> tuple:
     coefficient = None     #ВСТАВИТЬ СВОЁ ЗНАЧЕНИЕ
     
-    heading = ('Average cluster coefficient',)
+    heading = ('Average clustering coefficient',)
     values = (coefficient,)
     return heading, values
 
@@ -43,7 +43,7 @@ def results_to_console(graph : Graph, function : callable, table_len : int = 100
 
 
 def main() -> None:
-    graph = Graph(file_path='../data/soc-sign-bitcoinotc.tsv', timestamp_col=3, number_of_lines_to_skip=2)
+    graph = Graph(file_path='./data/soc-sign-bitcoinotc.tsv', timestamp_col=3, number_of_lines_to_skip=2)
 
     tasks_to_output = {task_1, task_2, task_3, task_3}
     for task in tasks_to_output:

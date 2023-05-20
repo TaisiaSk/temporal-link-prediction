@@ -1,7 +1,6 @@
-import numpy
 import random
 import math
-from graph.graph import Graph
+from graph.Graph import Graph
 from collections import deque
 
 

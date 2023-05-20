@@ -180,5 +180,3 @@ class Graph(object):
         max = self.max_timestamp()
         min = self.min_timestamp()
         return (max - min) * timestamp_filter / 100 + min
-
-        

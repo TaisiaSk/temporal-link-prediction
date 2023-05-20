@@ -54,8 +54,4 @@ class Logger(object):
 
     def __key(self, vertex_id_1 : int, vertex_id_2 : int) -> str:
         return str(min(vertex_id_1, vertex_id_2)) + '-' + str(max(vertex_id_1, vertex_id_2))
-
-
-  
     
-                
