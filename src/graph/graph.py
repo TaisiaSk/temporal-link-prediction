@@ -4,6 +4,8 @@ class Graph(object):
             self.__adjacent_vertices = dict()
             self.__edges_info = dict()
             self.__timestamps = set()
+            self.__is_multigraph = False
+            self.__number_of_edges_without_multiplicity = 0
 
             with open(file_path, "r") as file:
                 for _ in range(0, number_of_lines_to_skip):
@@ -24,7 +26,10 @@ class Graph(object):
             print("Could not open/read file: ", file_path)
 
 
-    def number_of_edges(self, timestamp_filter : int = 100) -> int:
+    def number_of_edges(self, timestamp_filter : int = 100, without_multiplicity : bool = False) -> int:
+        if (without_multiplicity):
+            return self.__number_of_edges_without_multiplicity / 2
+
         if (timestamp_filter == 100):
             return len(self.__edges_info)
         filter = self.__filter(timestamp_filter)
@@ -88,14 +93,18 @@ class Graph(object):
         return set(id for id in edges if self.__edges_info[id][0] <= filter)
 
 
-    def add_vertex(self, vertex_id : int):
+    def is_multigraph(self) -> bool:
+        return self.__is_multigraph
+
+
+    def add_vertex(self, vertex_id : int) -> None:
         if (vertex_id is None) or (vertex_id < 0):
             raise Exception(f"Vertex id is invalid: " + str(vertex_id))
         if not (vertex_id in self.__adjacent_vertices):
             self.__adjacent_vertices[vertex_id] = dict() 
 
 
-    def remove_vertex(self, vertex_id : int):
+    def remove_vertex(self, vertex_id : int) -> None:
         if (vertex_id is None) or (vertex_id < 0):
             raise Exception(f"Vertex id is invalid: " + str(vertex_id))
         if not (vertex_id in self.__adjacent_vertices):
@@ -110,7 +119,7 @@ class Graph(object):
         del self.__adjacent_vertices[vertex_id]
         
 
-    def add_edge(self, vertex_id_1 : int, vertex_id_2 : int, edge_id : int, timestamp : float = None):
+    def add_edge(self, vertex_id_1 : int, vertex_id_2 : int, edge_id : int, timestamp : float = None) -> None:
         if (edge_id in self.__edges_info):
             raise Exception(f"Such edge id already exists: " + str(edge_id))
 
@@ -123,7 +132,7 @@ class Graph(object):
         self.__edges_info[edge_id] = [timestamp, vertex_id_1, vertex_id_2]
 
 
-    def remove_edge(self, edge_id : int):
+    def remove_edge(self, edge_id : int) -> None:
         if (edge_id is None) or (edge_id < 0):
             raise Exception(f"Edge id is invalid: " + str(edge_id))
         
@@ -145,19 +154,26 @@ class Graph(object):
         return graph_str
 
 
-    def __add_edge_to_list(self, vertex_from : int, vertex_to : int, edge_id : int):
+    def __add_edge_to_list(self, vertex_from : int, vertex_to : int, edge_id : int) -> None:
         if not (vertex_to in self.__adjacent_vertices[vertex_from]):
             self.__adjacent_vertices[vertex_from][vertex_to] = set()
+            self.__number_of_edges_without_multiplicity += 1
+
+        if (self.__is_multigraph == False) and (len(self.__adjacent_vertices[vertex_from][vertex_to]) > 0):
+            # print(vertex_from, vertex_to)
+            self.__is_multigraph = True
+
         self.__adjacent_vertices[vertex_from][vertex_to].add(edge_id)
 
 
-    def __remove_edge_from_list(self, vertex_from : int, vertex_to : int, edge_id : int):
+    def __remove_edge_from_list(self, vertex_from : int, vertex_to : int, edge_id : int) -> None:
         self.__adjacent_vertices[vertex_from][vertex_to].remove(edge_id)
         if (len(self.__adjacent_vertices[vertex_from][vertex_to]) == 0):
             del self.__adjacent_vertices[vertex_from][vertex_to]
+            self.__number_of_edges_without_multiplicity -= 1
 
 
-    def __filter(self, timestamp_filter : int):
+    def __filter(self, timestamp_filter : int) -> float:
         if (timestamp_filter < 0 or timestamp_filter > 100):
             raise Exception(f"Required filter value is out of range: " + str(timestamp_filter))
         

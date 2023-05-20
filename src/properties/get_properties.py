@@ -1,6 +1,5 @@
 from queue import Queue
-
-from Graph import Graph
+from graph.graph import Graph
 
 
 # BFS for component
