@@ -22,4 +22,6 @@ def __to_str_tuple(values : tuple, col_len : int = 20) -> tuple:
             value_str = value_str[0:col_len]
         formated.append(value_str)
 
+    print(formated)
+
     return tuple(formated)

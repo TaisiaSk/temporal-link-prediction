@@ -1,69 +1,106 @@
 from graph import Graph
 from table_maker import table_str
-import basic_properties as bp
+from tasks import *
+import os
 
 
-def task_1(graph : Graph) -> tuple:
-    vertices = bp.get_vertices_count(graph)
-    edges = bp.get_edges_count(graph)
-    dencity = bp.get_dencity(graph)
-    components = bp.get_components_count(graph)
-    percentage = bp.get_percentage(graph)
+datasets = [{'file_name' : 'bitcoinotc.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1}, 
+            {'file_name' : 'bitcoinalpha.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1}, 
+            {'file_name' : 'email.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1}, 
+            {'file_name' : 'ucsocial.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 2}]
 
-    heading = ('Vertices', 'Edges', 'Dencity', 'Components', 'Percentage')
-    values = (vertices, edges, dencity, components, percentage)
-    return heading, values
+tasks_to_output = [{'name' : 'Number of vertices, number of edges, density...', 'func' : task_1}, 
+                   {'name' : 'Radius, network diameter, 90 percentile...', 'func' : task_2}, 
+                   {'name' : 'Average cluster coefficient', 'func' : task_3}, 
+                   {'name' : 'The coefficient of assortativity', 'func' : task_4}]
 
-# !!!!!!!!!!!!!!!!!!!!!!!
-# ЕСТЬ 2 ВАРИАНТА ВЫВОДА:
-# 
-# 1) Для большого графа (мощность самой большой компоненты >= 500)
-#  две строки вывода: снежный ком и рандом
-#  
-# 2) Маленький граф
-#  одна строка вывода
-# НАДО РАЗБИТЬ НА ДВА СЛУЧАЯ
-# !!!!!!!!!!!!!!!!!!!!!!!!
-def task_2(graph : Graph) -> tuple:
-    # bp.get_metrics(graph) returns:
-    # d_metrics = {'radius', 'diameter', 'perc90'} for SMALL
-    # d_metrics = {'snow': {'radius', 'diameter', 'perc90'}, 
-    #              'not_snow': {'radius', 'diameter', 'perc90'}} for BIG
-    # metrics = bp.get_metrics(graph) 
-    radius = None       #ВСТАВИТЬ СВОЁ ЗНАЧЕНИЕ
-    diameter = None     #ВСТАВИТЬ СВОЁ ЗНАЧЕНИЕ
-    snowball90 = None   #ВСТАВИТЬ СВОЁ ЗНАЧЕНИЕ
-    random90 = None     #ВСТАВИТЬ СВОЁ ЗНАЧЕНИЕ
-    
-    heading = ('Radius', 'Diameter', '90-th (snowball)', '90-th (random 500)')
-    values = (radius, diameter, snowball90, random90)
-    return heading, values
+if os.name == 'nt':
+    clear = lambda: os.system('cls')
+else:
+    clear = lambda: os.system('clear')
 
-def task_3(graph : Graph) -> tuple:
-    coefficient = bp.get_avg_coeff(graph)
-    
-    heading = ('Average clustering coefficient',)
-    values = (coefficient,)
-    return heading, values
 
-def task_4(graph : Graph) -> tuple:
-    coefficient = bp.get_dg_assortativity(graph)
-
-    heading = ('Degree assortativity',)
-    values = (coefficient,)
-    return heading, values
-
-def results_to_console(graph : Graph, function : callable, table_len : int = 100) -> None:
+def results_as_table(graph : Graph, function : callable, table_len : int = 100) -> str:
     heading, values = function(graph)
-    print(table_str(heading, values, table_len))
+    return table_str(heading, values, table_len)
+
+
+def results_section(idx : int, output : str = '') -> str:
+    current_dataset = datasets[idx]
+    file_path = '../data/' + current_dataset['file_name']
+    timestamp_col = current_dataset['timestamp_col']
+    number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
+
+    g = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+
+    while True:
+        output += 'You have chosen: ' + str(datasets[idx]['file_name']) + '\n\n'
+        output += 'Select a task to output:\n\n'
+        for task_idx in range(len(tasks_to_output)):
+            output += ' ' + str(task_idx) + ' : ' + str(tasks_to_output[task_idx]['name']) + '\n'
+        output += '\n-1 : Exit\n'
+        output += '\nEnter the number: '
+
+        clear()
+        print(output, end='')
+        task_idx = input()
+
+        if (task_idx == '-1'):
+            return int(task_idx), datasets_section
+
+        if not (task_idx.isdigit()):
+            output = f'Incorrect output: {task_idx}\n\n'
+            continue
+        
+        task_idx = int(task_idx)
+        if (task_idx < 0) or (task_idx >= len(tasks_to_output)):
+            output = f'Your number is out of range: [-1, {len(tasks_to_output) - 1}]\n\n'
+            continue
+
+        clear()
+        table = results_as_table(g, tasks_to_output[task_idx]['func'], table_len=100) + '\n\n'
+        output = 'You have chosen: ' + str(tasks_to_output[task_idx]['name']) + '\n\n' + table + '\n\n'
+        output += 'Press any button to exit\n'
+        clear()
+        print(output, end='')
+        
+        input()
+
+
+def datasets_section(idx : int, output : str = '') -> tuple:
+    while True:
+        output += 'Select a dataset:\n\n'
+        for idx in range(len(datasets)):
+            output += ' ' + str(idx) + ' : ' + datasets[idx]['file_name'] + '\n'
+        output += '\n-1 : Exit\n'
+        output += '\nEnter the number: '
+
+        clear()
+        print(output, end='')
+        idx = input()
+
+        if (idx == '-1'):
+            return int(idx), None
+
+        if not (idx.isdigit()):
+            output = f'Incorrect output: {idx}\n\n'
+            continue
+        
+        idx = int(idx)
+        if (idx < 0) or (idx >= len(datasets)):
+            output = f'Your number is out of range: [-1, {len(datasets) - 1}]\n\n'
+            continue
+        
+        return idx, results_section
 
 
 def main() -> None:
-    graph = Graph(file_path='./data/soc-sign-bitcoinotc.tsv', timestamp_col=3, number_of_lines_to_skip=2)
+    console_state = datasets_section
+    idx = 0
 
-    tasks_to_output = {task_1, task_2, task_3, task_4}
-    for task in tasks_to_output:
-        results_to_console(graph, task, table_len=100)
-
+    while (True):
+        idx, console_state = console_state(idx=idx) 
+        if (console_state is None):
+            return
 
 main()
