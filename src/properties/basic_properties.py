@@ -1,9 +1,8 @@
-import numpy
-
-from Graph import Graph
-from collections import deque
 import random
 import math
+from graph.Graph import Graph
+from collections import deque
+
 
 # count of vertices
 # => Graph
