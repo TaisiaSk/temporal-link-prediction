@@ -37,6 +37,13 @@ class Logger(object):
         return result
     
 
+    def get_features(self) -> list:
+        result = []
+        for features in self.__logs.values():
+            result.append(features)
+        return result
+
+
     def log(self, vertex_id_1 : int, vertex_id_2 : int, features : list) -> None:
         key = self.__key(vertex_id_1, vertex_id_2)
         if (key in self.__logs):

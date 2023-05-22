@@ -130,8 +130,8 @@ for current_dataset in datasets:
 
     # find_pairs(graph_full, graph_cut, logger)
     # add_pairs_wich_will_appear(graph_cut, logger, filter)
-    # check(graph_full, graph_cut, logger)
-    print(count_appearance(logger))
+    check(graph_full, graph_cut, logger)
+    # print(count_appearance(logger))
 
    
         
