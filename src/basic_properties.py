@@ -266,8 +266,8 @@ def __estimate_metrics_not_snow(vertices: set, graph: Graph) -> dict:
 
         metrix = __get_metrics_from_distances_list(distances, max_distances)
 
-        print(f"intermediate distance statistics: {distances}")
-        print(f"intermediate metrix: {metrix}")
+        # print(f"intermediate distance statistics: {distances}")
+        # print(f"intermediate metrix: {metrix}")
 
         radius += metrix['radius']
         diameter += metrix['diameter']
@@ -307,8 +307,8 @@ def __estimate_metrics_snow(vertexes, graph):
 
         metrix = __get_metrics_from_distances_list(distances, max_distances)
 
-        print(f"intermediate distance statistics: {distances}")
-        print(f"intermediate metrix: {metrix}")
+        # print(f"intermediate distance statistics: {distances}")
+        # print(f"intermediate metrix: {metrix}")
 
         radius += metrix['radius']
         diameter += metrix['diameter']
@@ -333,7 +333,7 @@ def __get_distance_properties(component, graph):
     if (size < small_graph_size):
         distances = list()
         max_distances = list()
-        print("--- start counting distance metrix for small graph")
+        print("--- start counting distance metrix for small graph ---")
 
         for idx, v in enumerate(vertices):
             max_distances.append(__bfs_get_counts_of_vertices_on_distance(v, size, distances, graph))
@@ -345,13 +345,13 @@ def __get_distance_properties(component, graph):
     
     # big graph
     else:
-        print("--- start not snow estimation")
+        print("--- start not snow estimation ---")
         metrics_not_snow = __estimate_metrics_not_snow(vertices, graph)
 
-        print("--- start snow estimation")
+        print("--- start snow estimation ---")
         metric_snow = __estimate_metrics_snow(vertices, graph)
 
-        return {'not_stow': metrics_not_snow, 'snow': metric_snow}
+        return {'not_snow': metrics_not_snow, 'snow': metric_snow}
 
 #small
 #graph = Graph(file_path="out .soc-sign-test", timestamp_col=2, skip_first_line=True)
@@ -395,7 +395,7 @@ def __bfs(graph: Graph, src: int) -> list:
 # Average clustering coefficient
 # vertexId: vertexId in max component
 def __average_clustering(graph: Graph, vertexId: int) -> float:
-    print('--- start calculating average clustering coefficient')
+    print('--- start calculating average clustering coefficient ---')
     
     cl = 0
     vertices = __bfs(graph, vertexId)
@@ -431,7 +431,7 @@ def __average_clustering(graph: Graph, vertexId: int) -> float:
 
 # Degree assortativity
 def __degree_assortativity(graph: Graph) -> float:
-    print('--- start calculating degree assortativity')
+    print('--- start calculating degree assortativity ---')
 
     edges_count = 0
     vertices = graph.vertices()

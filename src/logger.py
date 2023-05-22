@@ -2,7 +2,7 @@ import json
 import os
 
 class Logger(object):
-    def __init__(self, dir : str = './', logs_file_name : str = 'logs.json', saving_step : int = 100):
+    def __init__(self, dir : str = './', logs_file_name : str = 'logs.json', saving_step : int = 50):
         if (saving_step <= 0):
             raise Exception("Saving step value is negative: " + str(saving_step))
 
@@ -14,16 +14,16 @@ class Logger(object):
             self.__logs = self.__parse_from_file()
         else:
             self.__logs = {}
-            
-    
-    def __del__(self):
-        self.dump()
 
 
     def dump(self):
         with open(self.__file_path, 'w+') as file:
             json.dump(self.__logs, file)
 
+
+    def get_logs(self) -> dict:
+        return self.__logs
+    
 
     def log(self, vertex_id_1 : int, vertex_id_2 : int, features : list):
         key = self.__key(vertex_id_1, vertex_id_2)
