@@ -80,7 +80,7 @@ def get_temporal_features(u: int, v: int, graph: Graph) -> np.ndarray:
     times_edges_from_v = np.array( \
         [np.array([graph.get_edge_info(edgeId)[0] for edgeId in edges], float) for edges in edges_from_v if edges], \
         dtype=np.ndarray)
-
+    
     sum_from_u = np.array([__wtf(time, is_multiedge=is_multigraph) for time in times_edges_from_u], float).sum(axis=0)
     sum_from_v = np.array([__wtf(time, is_multiedge=is_multigraph) for time in times_edges_from_v], float).sum(axis=0)
 
