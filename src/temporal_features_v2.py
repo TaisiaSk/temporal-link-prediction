@@ -65,7 +65,7 @@ def wtf(times: list, \
     return time_strategy(times[0], t_min, t_max)
 
 # Get final vector
-def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
+def feature(u: int, v: int, graph: Graph) -> list:
     cn = []
     jc = []
     aa = []
@@ -73,8 +73,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
 
     is_multigraph = graph.is_multigraph()
     
-    neighbors_u = graph.adj(u, timestamp)
-    neighbors_v = graph.adj(v, timestamp)
+    neighbors_u = graph.adj(u)
+    neighbors_v = graph.adj(v)
     common_neighbors = neighbors_u.intersection(neighbors_v)
 
     time_strategies = get_weightings()
@@ -86,8 +86,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
             for agg in agg_strategies:
                 cn_curr = jc_curr = aa_curr = 0
 
-                edges_from_u = [graph.get_edges_between(u, z, timestamp) for z in neighbors_u]
-                edges_from_v = [graph.get_edges_between(u, z, timestamp) for z in neighbors_v]
+                edges_from_u = [graph.get_edges_between(u, z) for z in neighbors_u]
+                edges_from_v = [graph.get_edges_between(u, z) for z in neighbors_v]
 
                 sum_from_u = 0
                 sum_from_v = 0 
@@ -109,8 +109,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
                 for neighbor in common_neighbors:
                     wtf_u = wtf_v = 0
 
-                    nb_to_u = graph.get_edges_between(u, neighbor, timestamp)
-                    nb_to_v = graph.get_edges_between(v, neighbor, timestamp)
+                    nb_to_u = graph.get_edges_between(u, neighbor)
+                    nb_to_v = graph.get_edges_between(v, neighbor)
 
                     if (nb_to_u):
                         times = [graph.get_edge_info(edge)[0] for edge in nb_to_u]
@@ -123,8 +123,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
                     cn_curr += wtf_u + wtf_v
                     jc_curr += wtf_u + wtf_v 
 
-                    from_neighbor = graph.adj(neighbor, timestamp)                    
-                    nb_to_node = [graph.get_edges_between(neighbor, node, timestamp) for node in from_neighbor]
+                    from_neighbor = graph.adj(neighbor)                    
+                    nb_to_node = [graph.get_edges_between(neighbor, node) for node in from_neighbor]
                     sum_from_nb = 0
 
                     for edge_nb in nb_to_node:
@@ -145,8 +145,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
         for time in time_strategies:
             cn_curr = jc_curr = aa_curr = 0
 
-            edges_from_u = [graph.get_edges_between(u, z, timestamp).pop() for z in neighbors_u]
-            edges_from_v = [graph.get_edges_between(u, z, timestamp).pop() for z in neighbors_v]
+            edges_from_u = [graph.get_edges_between(u, z).pop() for z in neighbors_u]
+            edges_from_v = [graph.get_edges_between(u, z).pop() for z in neighbors_v]
 
             sum_from_u = 0
             sum_from_v = 0 
@@ -163,8 +163,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
 
             for neighbor in common_neighbors:
                 wtf_u = wtf_v = 0
-                nb_to_u = graph.get_edges_between(u, neighbor, timestamp)
-                nb_to_v = graph.get_edges_between(v, neighbor, timestamp)
+                nb_to_u = graph.get_edges_between(u, neighbor)
+                nb_to_v = graph.get_edges_between(v, neighbor)
 
                 if (nb_to_u):
                     time_nb_to_u = [graph.get_edge_info(nb_to_u.pop())[0]]
@@ -177,8 +177,8 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
                 cn_curr += nb_to_u + nb_to_v
                 jc_curr += nb_to_u + nb_to_v 
 
-                from_neighbor = graph.adj(neighbor, timestamp)                    
-                nb_to_node = [graph.get_edges_between(neighbor, node, timestamp).pop() for node in from_neighbor]
+                from_neighbor = graph.adj(neighbor)                    
+                nb_to_node = [graph.get_edges_between(neighbor, node).pop() for node in from_neighbor]
                 sum_from_nb = 0
 
                 for edge_nb in nb_to_node:
@@ -196,8 +196,12 @@ def feature(u: int, v: int, graph: Graph, timestamp: int) -> list:
 
     return cn + jc + aa + pa 
 
+current_dataset = {'file_name' : 'ucsocial.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 2, 'filter' : 23}
+file_path = './data/' + current_dataset['file_name']
+timestamp_col = current_dataset['timestamp_col']
+number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
 
-a = Graph(file_path='./data/opsahl-ucsocial.tsv', timestamp_col=3, number_of_lines_to_skip=2)
+g = Graph(file_path, timestamp_col, number_of_lines_to_skip)
 
 # start_time = time.time()
 # features0 = get_topological_feature(105, 8, a, 100)
@@ -205,6 +209,6 @@ a = Graph(file_path='./data/opsahl-ucsocial.tsv', timestamp_col=3, number_of_lin
 # print(features0)
 
 start_time = time.time()
-features1 = feature(105, 8, a, 100)
+features1 = feature(105, 8, g)
 print("--- %s seconds ---" % (time.time() - start_time))
 print(features1)
