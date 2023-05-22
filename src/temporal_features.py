@@ -45,7 +45,12 @@ AGGREGATIONS = (np.min, \
 def __wtf(times: np.ndarray, is_multiedge: bool = False) -> np.ndarray:
     if is_multiedge:
         weight = np.fromiter((w(times) for w in WEIGHTINGS), np.ndarray)
-        weight = np.fromiter((a(arr) for a in AGGREGATIONS for arr in weight), np.ndarray)
+
+        if times.size > 1:
+            weight = np.fromiter((a(arr) for a in AGGREGATIONS for arr in weight), np.ndarray)
+        else:
+            weight = np.fromiter((arr for _ in AGGREGATIONS for arr in weight), np.ndarray)
+
     else:
         weight = np.fromiter((w(times) for w in WEIGHTINGS), float)
 
@@ -103,12 +108,12 @@ def get_temporal_features(u: int, v: int, graph: Graph) -> np.ndarray:
         times_edges_to_v = np.array([graph.get_edge_info(edgeId)[0] for edgeId in edges_to_v], float)
 
         wtf_u = __wtf(times_edges_to_u, is_multiedge=is_multigraph).astype(float)
-        wtf_u = __wtf(times_edges_to_v, is_multiedge=is_multigraph).astype(float)
+        wtf_v = __wtf(times_edges_to_v, is_multiedge=is_multigraph).astype(float)
 
-        cn += wtf_u + wtf_u
-        jc += wtf_u + wtf_u
+        cn += wtf_u + wtf_v
+        jc += wtf_u + wtf_v
 
-        aa += (wtf_u + wtf_u) / np.log(1 + sum_from_nb)
+        aa += (wtf_u + wtf_v) / np.where(np.log(1 + sum_from_nb)==0.0, 1e-15, np.log(1 + sum_from_nb))
 
     jc /= (sum_from_u + sum_from_v)
 
@@ -120,7 +125,7 @@ def get_temporal_features(u: int, v: int, graph: Graph) -> np.ndarray:
 
 # Testing
 
-# current_dataset = {'file_name' : 'ucsocial.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 2, 'filter' : 23}
+# current_dataset = {'file_name' : 'bitcoinotc.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 42}
 # file_path = './data/' + current_dataset['file_name']
 # timestamp_col = current_dataset['timestamp_col']
 # number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
@@ -128,7 +133,7 @@ def get_temporal_features(u: int, v: int, graph: Graph) -> np.ndarray:
 # g = Graph(file_path, timestamp_col, number_of_lines_to_skip)
 
 # start_time = time.time()
-# features1 = get_temporal_features(105, 8, g)
+# features1 = get_temporal_features(123, 160, g)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print(features1)
 # print(len(features1))
