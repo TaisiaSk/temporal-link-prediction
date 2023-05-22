@@ -36,7 +36,7 @@ class Graph(object):
         return edges
 
     
-    def cut_proportion(self, timestamp_filter : int) -> float:
+    def cut_proportion(self) -> float:
         total_len = 0
         for value in self.__timestamps.values():
             total_len += len(value)
@@ -75,7 +75,7 @@ class Graph(object):
             self.__timestamps[timestamp].append([v1, v2])
 
         file.seek(0)
-        return len(vertices)
+        return max(vertices)
 
 
     def number_of_edges(self, without_multiplicity : bool = False) -> int:
