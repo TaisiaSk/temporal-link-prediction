@@ -2,13 +2,14 @@ import json
 import os
 
 class Logger(object):
-    def __init__(self, dir : str = './', logs_file_name : str = 'logs.json', saving_step : int = 50):
+    def __init__(self, dir : str = './', logs_file_name : str = 'logs.json', saving_step : int = 50, dump_before_del : bool = True):
         if (saving_step <= 0):
             raise Exception("Saving step value is negative: " + str(saving_step))
 
         self.__counter = 0
         self.__saving_step = saving_step
         self.__file_path = dir + '/' + logs_file_name
+        self.__dump_before_del = dump_before_del
 
         if os.path.isfile(self.__file_path):
             self.__logs = self.__parse_from_file()
@@ -18,7 +19,8 @@ class Logger(object):
     
     def __del__(self):
         try:
-            self.dump()
+            if (self.__dump_before_del):
+                self.dump()
         except NameError:
             pass
 

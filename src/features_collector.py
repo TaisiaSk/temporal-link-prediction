@@ -5,7 +5,7 @@ from temporal_features import get_temporal_features as get_features
 import numpy as np
 
 def features_to_matrix(dataset : dict) -> tuple:
-    features_logger = Logger(dir='../features/', logs_file_name=dataset['file_name'] + '.json')
+    features_logger = Logger(dir='../features/', logs_file_name=dataset['file_name'] + '.json', dump_before_del=False)
     features = features_logger.get_features()
 
     vector = []
@@ -48,10 +48,10 @@ def find_features(current_dataset : dict):
     features_logger.dump()
 
 
-for current_dataset in datasets: 
+for current_dataset in datasets[1 : 2]: 
     vector, matrix = features_to_matrix(current_dataset)
-    print(vector)
-    print(matrix)
+    print(len(vector), len(matrix))
+    print(len(matrix[0]))
         
 
 
