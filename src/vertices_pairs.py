@@ -1,6 +1,7 @@
 from collections import deque
 from graph import Graph
 from logger import Logger
+from main import datasets
 import basic_properties as bp
 import os
 import random
@@ -107,12 +108,6 @@ def count_appearance(logger : Logger) -> list:
         cnt[appearance] += 1
 
     return cnt
-
-
-datasets = [{'file_name' : 'bitcoinotc.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 42}, 
-            {'file_name' : 'bitcoinalpha.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 34}, 
-            {'file_name' : 'email.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 26}, 
-            {'file_name' : 'ucsocial.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 2, 'filter' : 18}]
 
 
 for current_dataset in datasets: 
