@@ -121,7 +121,7 @@ filter = current_dataset['filter']
 graph_full = Graph(file_path, timestamp_col, number_of_lines_to_skip)
 graph_cut = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
 
-print(graph_cut.cut_proportion(filter), len(graph_full.edges_that_will_appear(filter)))
+print(graph_cut.cut_proportion(), len(graph_full.edges_that_will_appear(filter)))
 
 # find_pairs(graph_full, graph_cut, logger)
 # add_pairs_wich_will_appear(graph_cut, logger, filter)

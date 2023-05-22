@@ -2,8 +2,23 @@ from graph import Graph
 from logger import Logger
 from main import datasets
 from temporal_features import get_temporal_features as get_features
+import numpy as np
 
-for current_dataset in datasets: 
+def features_to_matrix(dataset : dict) -> tuple:
+    features_logger = Logger(dir='../features/', logs_file_name=dataset['file_name'] + '.json')
+    features = features_logger.get_features()
+
+    vector = []
+    matrix = []
+    for feature in features:
+        vector.append(feature[0])
+        feature.pop(0)
+        matrix.append(feature)
+
+    return np.array(vector), np.array(matrix)
+
+
+def find_features(current_dataset : dict):
     file_path = '../data/' + current_dataset['file_name']
     timestamp_col = current_dataset['timestamp_col']
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
@@ -31,6 +46,12 @@ for current_dataset in datasets:
         counter[appearance] += 1
 
     features_logger.dump()
+
+
+for current_dataset in datasets: 
+    vector, matrix = features_to_matrix(current_dataset)
+    print(vector)
+    print(matrix)
         
 
 
