@@ -1,4 +1,4 @@
-from Graph import Graph
+from graph import Graph
 import math
 
 # common neighbours
