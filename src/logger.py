@@ -2,7 +2,7 @@ import json
 import os
 
 class Logger(object):
-    def __init__(self, dir : str = './', logs_file_name : str = 'logs.json', saving_step : int = 1000):
+    def __init__(self, dir : str = './', logs_file_name : str = 'logs.json', saving_step : int = 50):
         if (saving_step <= 0):
             raise Exception("Saving step value is negative: " + str(saving_step))
 
