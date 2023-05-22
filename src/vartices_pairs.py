@@ -48,7 +48,7 @@ def find_pairs(graph : Graph, filter : int, logger : Logger) -> None:
     max_amount = 10000
 
     for _ in range(500):
-        found_0, found_1 = find_double_neighbors(graph, random.randint(1, graph.number_of_vertices()), 
+        found_0, found_1 = find_double_neighbors(graph, random.randint(1, graph.number_of_vertices() - 1), 
                                                  filter, logger, found_0, found_1)
         print(found_0, found_1)
         if (found_0 >= max_amount) and (found_1 >= max_amount):
@@ -69,7 +69,7 @@ for current_dataset in datasets:
     filter = current_dataset['filter']
 
     g = Graph(file_path, timestamp_col, number_of_lines_to_skip)
-    result = find_pairs(g, filter, logger)
+    find_pairs(g, filter, logger)
     logger.dump()
 
 
