@@ -24,6 +24,24 @@ class Graph(object):
         except OSError:
             print("Could not open/read file: ", file_path)
 
+    
+    def edges_that_will_appear(self, timestamp_filter : int) -> list:
+        filter = self.__filter(timestamp_filter)
+        edges = []
+        for key in self.__timestamps: 
+            if (key <= filter):
+                continue
+            edges.extend(self.__timestamps[key])
+
+        return edges
+
+    
+    def cut_proportion(self, timestamp_filter : int) -> float:
+        total_len = 0
+        for value in self.__timestamps.values():
+            total_len += len(value)
+        return self.number_of_edges() / total_len
+
 
     def __init_data_structures(self, file, timestamp_col : int, number_of_lines_to_skip : int):
         self.__is_multigraph = False
@@ -52,7 +70,7 @@ class Graph(object):
             vertices.add(v1)
             vertices.add(v2)
     
-            if not (timestamp in self.__timestamps):
+            if (timestamp not in self.__timestamps):
                 self.__timestamps[timestamp] = []
             self.__timestamps[timestamp].append([v1, v2])
 

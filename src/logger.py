@@ -15,19 +15,30 @@ class Logger(object):
         else:
             self.__logs = {}
 
+    
+    def __del__(self):
+        try:
+            self.dump()
+        except NameError:
+            pass
 
-    def dump(self):
+
+    def dump(self) -> None:
         with open(self.__file_path, 'w+') as file:
             json.dump(self.__logs, file)
 
 
-    def get_logs(self) -> dict:
-        return self.__logs
+    def get_pairs(self) -> list:
+        result = []
+        for key, value in self.__logs.items():
+            pair = self.__pair_from_key(key)
+            pair.append(value[0])
+            result.append(pair)
+        return result
     
 
-    def log(self, vertex_id_1 : int, vertex_id_2 : int, features : list):
+    def log(self, vertex_id_1 : int, vertex_id_2 : int, features : list) -> None:
         key = self.__key(vertex_id_1, vertex_id_2)
-
         if (key in self.__logs):
             raise Exception("Such data is already stored:\n " + key + " : " + str(self.__logs[key]))
 
@@ -38,8 +49,22 @@ class Logger(object):
             self.dump()
 
     
-    def contains(self, vertex_id_1 : int, vertex_id_2 : int):
-        return self.__key(vertex_id_1, vertex_id_2) in self.__logs
+    def remove(self, vertex_id_1 : int, vertex_id_2 : int) -> None:
+        key = self.__key(vertex_id_1, vertex_id_2)
+        if (key not in self.__logs):
+            return
+        
+        del self.__logs[key] 
+        self.__counter += 1
+
+        if (self.__counter % self.__saving_step == 0):
+            self.dump()
+
+
+    
+    def contains(self, vertex_id_1 : int, vertex_id_2 : int) -> bool:
+        key = self.__key(vertex_id_1, vertex_id_2)
+        return (key in self.__logs)
 
 
     def __parse_from_file(self) -> dict:
@@ -54,4 +79,9 @@ class Logger(object):
 
     def __key(self, vertex_id_1 : int, vertex_id_2 : int) -> str:
         return str(min(vertex_id_1, vertex_id_2)) + '-' + str(max(vertex_id_1, vertex_id_2))
+    
+
+    def __pair_from_key(self, key : str) -> list:
+        tokens = key.split('-')
+        return [int(tokens[0]), int(tokens[1])]
     
