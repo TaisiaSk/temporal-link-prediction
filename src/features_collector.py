@@ -1,11 +1,7 @@
 from graph import Graph
 from logger import Logger
+from main import datasets
 from temporal_features import get_temporal_features as get_features
-
-datasets = [{'file_name' : 'bitcoinotc.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 42}, 
-            {'file_name' : 'bitcoinalpha.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 34}, 
-            {'file_name' : 'email.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 26}, 
-            {'file_name' : 'ucsocial.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 2, 'filter' : 18}]
 
 for current_dataset in datasets: 
     file_path = '../data/' + current_dataset['file_name']
