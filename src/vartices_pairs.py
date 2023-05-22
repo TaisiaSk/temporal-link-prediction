@@ -42,8 +42,9 @@ def find_double_neighbors(graph : Graph, src : int, filter : int, logger : Logge
 
 
 def find_pairs(graph : Graph, filter : int, logger : Logger) -> None:
-    found_0 = 0
-    found_1 = 0
+    logs = logger.get_logs()
+    found_0 = len([key for key, value in logs.items() if value[0] == 0])
+    found_1 = len([key for key, value in logs.items() if value[0] == 1])
     max_amount = 10000
 
     for _ in range(500):
