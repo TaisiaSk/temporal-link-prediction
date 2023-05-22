@@ -19,7 +19,8 @@ for current_dataset in datasets:
 
     pairs = pairs_logger.get_pairs()
     max_amount = min(len([pair for pair in pairs if pair[2] == 0]), len([pair for pair in pairs if pair[2] == 1]))
-    counter = [0, 0]
+    logs = features_logger.get_features()
+    counter = [len([feature for feature in logs if feature[0] == 0]), len([feature for feature in logs if feature[0] == 1])]
 
     for pair in pairs:
         v1 = pair[0]
@@ -28,7 +29,7 @@ for current_dataset in datasets:
 
         if (counter[appearance] == max_amount) or (features_logger.contains(v1, v2)):
             continue
-        print(v1, v2)
+        print(v1, v2, counter)
         features = [appearance] + get_features(v1, v2, graph).tolist()
         features_logger.log(v1, v2, features)
         counter[appearance] += 1
