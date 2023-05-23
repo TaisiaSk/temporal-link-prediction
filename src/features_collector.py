@@ -25,7 +25,7 @@ def find_features(current_dataset : dict):
     filter = current_dataset['filter']
 
     graph = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
-    pairs_logger = Logger(dir='../pairs/', logs_file_name=current_dataset['file_name'] + '.json')
+    pairs_logger = Logger(dir='../pairs/', logs_file_name=current_dataset['file_name'] + '.json', dump_before_del=False)
     features_logger = Logger(dir='../features/', logs_file_name=current_dataset['file_name'] + '.json', saving_step=30)
 
     pairs = pairs_logger.get_pairs()
@@ -48,10 +48,10 @@ def find_features(current_dataset : dict):
     features_logger.dump()
 
 
-for current_dataset in datasets[1 : 2]: 
-    vector, matrix = features_to_matrix(current_dataset)
-    print(len(vector), len(matrix))
-    print(len(matrix[0]))
+# current_dataset = datasets[0] 
+# find_features(current_dataset)
+# print(len(vector), len(matrix))
+# print(len(matrix[0]))
         
 
 

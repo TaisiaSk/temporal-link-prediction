@@ -24,6 +24,40 @@ class Graph(object):
         except OSError:
             print("Could not open/read file: ", file_path)
 
+
+    def __init_data_structures(self, file, timestamp_col : int, number_of_lines_to_skip : int):
+        self.__is_multigraph = False
+        self.__number_of_edges_without_multiplicity = 0
+        self.__number_of_vertices = 0
+      
+        self.__edges_info = dict()
+        self.__timestamps = dict()
+        vertices_num = self.__numer_of_vertices_from_file(file, timestamp_col, number_of_lines_to_skip)
+        self.__adjacent_vertices = [None for _ in range(vertices_num + 1)]
+
+
+    def __numer_of_vertices_from_file(self, file, timestamp_col : int, number_of_lines_to_skip : int) -> int:
+        file.seek(0)
+        for _ in range(0, number_of_lines_to_skip):
+            next(file)
+
+        vertices = set()
+        for line in file:
+            tokens = line.split()
+            v1 = int(tokens[0])
+            v2 = int(tokens[1])
+            timestamp = float(tokens[timestamp_col])
+
+            vertices.add(v1)
+            vertices.add(v2)
+    
+            if (timestamp not in self.__timestamps):
+                self.__timestamps[timestamp] = []
+            self.__timestamps[timestamp].append([v1, v2])
+
+        file.seek(0)
+        return max(vertices)
+
     
     def edges_that_will_appear(self, timestamp_filter : int) -> list:
         filter = self.__filter(timestamp_filter)
@@ -43,41 +77,6 @@ class Graph(object):
         return self.number_of_edges() / total_len
 
 
-    def __init_data_structures(self, file, timestamp_col : int, number_of_lines_to_skip : int):
-        self.__is_multigraph = False
-        self.__number_of_edges_without_multiplicity = 0
-        self.__number_of_vertices = 0
-      
-        self.__edges_info = dict()
-        self.__timestamps = dict()
-        vertices_num = self.__numer_of_vertices_from_file(file, timestamp_col, number_of_lines_to_skip)
-        self.__adjacent_vertices = [None for _ in range(vertices_num + 1)]
-
-
-    def __numer_of_vertices_from_file(self, file, timestamp_col : int, number_of_lines_to_skip : int) -> int:
-        file.seek(0)
-        for _ in range(0, number_of_lines_to_skip):
-            next(file)
-
-        vertices = set()
-
-        for line in file:
-            tokens = line.split()
-            v1 = int(tokens[0])
-            v2 = int(tokens[1])
-            timestamp = float(tokens[timestamp_col])
-
-            vertices.add(v1)
-            vertices.add(v2)
-    
-            if (timestamp not in self.__timestamps):
-                self.__timestamps[timestamp] = []
-            self.__timestamps[timestamp].append([v1, v2])
-
-        file.seek(0)
-        return max(vertices)
-
-
     def number_of_edges(self, without_multiplicity : bool = False) -> int:
         if (without_multiplicity):
             return int(self.__number_of_edges_without_multiplicity / 2)
@@ -93,7 +92,7 @@ class Graph(object):
 
 
     def number_of_vertices(self) -> int:
-        return self.__number_of_vertices
+        return len(self.__adjacent_vertices)
 
 
     def edges_ids(self) -> set:

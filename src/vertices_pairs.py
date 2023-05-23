@@ -2,8 +2,6 @@ from collections import deque
 from graph import Graph
 from logger import Logger
 from main import datasets
-import basic_properties as bp
-import os
 import random
 
 def find_double_neighbors(graph_full : Graph, graph_cut : Graph, src : int, logger : Logger, 
@@ -110,18 +108,18 @@ def count_appearance(logger : Logger) -> list:
     return cnt
 
 
-current_dataset = datasets[0]
-logger = Logger(dir='../pairs/', logs_file_name=current_dataset['file_name'] + '.json', saving_step=100)
+# current_dataset = datasets[0]
+# logger = Logger(dir='../pairs/', logs_file_name=current_dataset['file_name'] + '.json', saving_step=100, dump_before_del=False)
 
-file_path = '../data/' + current_dataset['file_name']
-timestamp_col = current_dataset['timestamp_col']
-number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
-filter = current_dataset['filter']
+# file_path = '../data/' + current_dataset['file_name']
+# timestamp_col = current_dataset['timestamp_col']
+# number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
+# filter = current_dataset['filter']
 
-graph_full = Graph(file_path, timestamp_col, number_of_lines_to_skip)
-graph_cut = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
+# graph_full = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+# graph_cut = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
 
-print(graph_cut.cut_proportion(), len(graph_full.edges_that_will_appear(filter)))
+# print(graph_cut.cut_proportion(), len(graph_full.edges_that_will_appear(filter)))
 
 # find_pairs(graph_full, graph_cut, logger)
 # add_pairs_wich_will_appear(graph_cut, logger, filter)
