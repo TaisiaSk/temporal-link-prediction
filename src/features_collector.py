@@ -63,16 +63,16 @@ def find_features(current_dataset : dict, static : bool):
     features_logger.dump()
 
 
-for current_dataset in datasets[0 : 1]:
-    print(current_dataset['file_name'])
-    file_path = './data/' + current_dataset['file_name']
-    timestamp_col = current_dataset['timestamp_col']
-    number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
-    filter = current_dataset['filter']
+# for current_dataset in datasets[0 : 1]:
+#     print(current_dataset['file_name'])
+#     file_path = './data/' + current_dataset['file_name']
+#     timestamp_col = current_dataset['timestamp_col']
+#     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
+#     filter = current_dataset['filter']
 
     # g = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
     # v1 = 217259
     # v2 = 235506
     # arr = get_temporal(v1, v2, g)
     # print(np.nan_to_num(arr))
-    print(features_to_matrix(current_dataset, static=False))
+    # print(features_to_matrix(current_dataset, static=False))

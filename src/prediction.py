@@ -53,6 +53,6 @@ def prediction(data: tuple, data_name: str) -> float:
 
 # Testing
 
-for dataset in datasets: 
-    data = features_to_matrix(dataset, static=False)
-    print(prediction(data, dataset['file_name'].split('.')[0]))
+# for dataset in datasets: 
+#     data = features_to_matrix(dataset, static=False)
+#     print(prediction(data, dataset['file_name'].split('.')[0]))
