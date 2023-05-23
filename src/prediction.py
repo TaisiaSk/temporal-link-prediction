@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from main import datasets
 
 import matplotlib.pyplot as plt
 
@@ -52,6 +53,6 @@ def prediction(data: tuple, data_name: str) -> float:
 
 # Testing
 
-# dataset = {'file_name' : 'email.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 26}
-# data = features_to_matrix(dataset)
-# print(prediction(data, dataset['file_name'].split('.')[0]))
+for dataset in datasets: 
+    data = features_to_matrix(dataset, static=False)
+    print(prediction(data, dataset['file_name'].split('.')[0]))

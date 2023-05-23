@@ -11,7 +11,7 @@ def features_to_matrix(dataset : dict, static : bool) -> tuple:
     else:
         subdir = 'temporal/'
 
-    features_logger = Logger(dir='../features/' + subdir, logs_file_name=dataset['file_name'] + '.json', dump_before_del=False)
+    features_logger = Logger(dir='./features/' + subdir, logs_file_name=dataset['file_name'] + '.json', dump_before_del=False)
     features = features_logger.get_features()
 
     vector = []
@@ -21,7 +21,7 @@ def features_to_matrix(dataset : dict, static : bool) -> tuple:
         feature.pop(0)
         matrix.append(feature)
 
-    return np.array(vector), np.array(matrix)
+    return np.array(vector), np.nan_to_num(np.array(matrix), posinf=0, neginf=0)
 
 
 def find_features(current_dataset : dict, static : bool):
@@ -65,30 +65,14 @@ def find_features(current_dataset : dict, static : bool):
 
 for current_dataset in datasets[0 : 1]:
     print(current_dataset['file_name'])
-    file_path = '../data/' + current_dataset['file_name']
+    file_path = './data/' + current_dataset['file_name']
     timestamp_col = current_dataset['timestamp_col']
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
     filter = current_dataset['filter']
 
-    g = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
-    v1 = 217259
-    v2 = 235506
-    print(get_temporal(v1, v2, g))
-
-#  find_features(current_dataset, static=True)
-# print(len(vector), len(matrix))
-# print(len(matrix[0]))
-        
-
-
-
-
-
-
-    
-
-   
-        
-   
-
-
+    # g = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
+    # v1 = 217259
+    # v2 = 235506
+    # arr = get_temporal(v1, v2, g)
+    # print(np.nan_to_num(arr))
+    print(features_to_matrix(current_dataset, static=False))
