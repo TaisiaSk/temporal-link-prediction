@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from graph import Graph
 
@@ -125,17 +126,17 @@ def get_temporal_features(u: int, v: int, graph: Graph) -> np.ndarray:
 
 # Testing
 
-# current_dataset = {'file_name' : 'bitcoinotc.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 1, 'filter' : 42}
-# file_path = './data/' + current_dataset['file_name']
-# timestamp_col = current_dataset['timestamp_col']
-# number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
+current_dataset = {'file_name' : 'diggfriends.tsv', 'timestamp_col' : 3, 'number_of_lines_to_skip' : 0, 'filter' : 60}
+file_path = './data/' + current_dataset['file_name']
+timestamp_col = current_dataset['timestamp_col']
+number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
 
-# g = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+g = Graph(file_path, timestamp_col, number_of_lines_to_skip)
 
-# start_time = time.time()
-# features1 = get_temporal_features(123, 160, g)
-# print("--- %s seconds ---" % (time.time() - start_time))
-# print(features1)
-# print(len(features1))
+start_time = time.time()
+features = get_temporal_features(217259, 235506, g)
+print("--- %s seconds ---" % (time.time() - start_time))
+print(features)
+print(len(features))
 
 # Result time for one pair: 1.27531 s
