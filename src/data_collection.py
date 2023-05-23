@@ -1,10 +1,10 @@
 import numpy as np
 import random
-from properties.logger import Logger
-from properties.graph import Graph
+from logger import Logger
+from graph import Graph
 from collections import deque
-from properties.temporal_features import get_temporal_features as get_temporal
-from properties.static_features import get_static_properties as get_static
+from temporal_features import get_temporal_features as get_temporal
+from static_features import get_static_properties as get_static
 
 ##########################################################__FEATURES__##########################################################
 

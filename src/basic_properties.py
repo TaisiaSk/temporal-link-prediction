@@ -1,7 +1,7 @@
 import random
 import math
 from collections import deque
-from properties.graph import Graph
+from graph import Graph
 
 
 # Count of vertices

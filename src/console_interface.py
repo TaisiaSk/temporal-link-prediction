@@ -1,6 +1,6 @@
-from properties.graph import Graph
-from interface.table_maker import table_str
-from interface.tasks import *
+from graph import Graph
+from table_maker import table_str
+from tasks import *
 from config import datasets
 import os
 
@@ -14,6 +14,15 @@ if os.name == 'nt':
     clear = lambda: os.system('cls')
 else:
     clear = lambda: os.system('clear')
+
+
+def __incorrect_input(range_to : int, output : str):
+    output = f'Input must be a number of range [-1, {range_to}]\n\n'
+    output += 'Press any button to continue'
+    clear()
+    print(output)
+    input()
+    output = ''
 
 
 def __results_as_table(graph : Graph, function : callable, table_len : int = 100) -> str:
@@ -48,12 +57,7 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
             return None, __datasets_section, None
 
         if not (task_idx.isdigit()):
-            output = f'Input must be a number of range [-1, {len(tasks_to_output) - 1}]\n\n'
-            output += 'Press any button to continue'
-            clear()
-            print(output)
-            input()
-            output = ''
+            __incorrect_input(len(tasks_to_output) - 1, output)
             continue
         
         task_idx = int(task_idx)
@@ -62,12 +66,7 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
 
 
         if (task_idx < 0) or (task_idx >= len(tasks_to_output)):
-            output = f'Input must be a number of range [-1, {len(tasks_to_output) - 1}]\n\n'
-            output += 'Press any button to continue'
-            clear()
-            print(output)
-            input()
-            output = ''
+            __incorrect_input(len(tasks_to_output) - 1, output)
             continue
 
         clear()
@@ -97,12 +96,7 @@ def __prediction_section(dataset_idx : int, output : str = '', graph : Graph = N
             return dataset_idx, __results_section, graph
 
         if not (task_idx.isdigit()):
-            output = f'Input must be a number of range [-1, 1]\n\n'
-            output += 'Press any button to continue'
-            clear()
-            print(output)
-            input()
-            output = ''
+            __incorrect_input(1, output)
             continue
         
         task_idx = int(task_idx)
@@ -127,12 +121,7 @@ def __prediction_section(dataset_idx : int, output : str = '', graph : Graph = N
                 input()
             output = ''
         else:
-            output = f'Input must be a number of range [-1, 1]\n\n'
-            output += 'Press any button to continue'
-            clear()
-            print(output)
-            input()
-            output = ''
+            __incorrect_input(1, output)
 
 
 def __datasets_section(dataset_idx : int, output : str = '', graph : Graph = None) -> tuple:
@@ -151,22 +140,12 @@ def __datasets_section(dataset_idx : int, output : str = '', graph : Graph = Non
             return int(idx), None, None
 
         if not (idx.isdigit()):
-            output = f'Input must be a number of range [-1, {len(datasets) - 1}]\n\n'
-            output += 'Press any button to continue'
-            clear()
-            print(output)
-            input()
-            output = ''
+            __incorrect_input(len(datasets) - 1, output)
             continue
         
         idx = int(idx)
         if (idx < 0) or (idx >= len(datasets)):
-            output = f'Input must be a number of range [-1, {len(datasets) - 1}]\n\n'
-            output += 'Press any button to continue'
-            clear()
-            print(output)
-            input()
-            output = ''
+            __incorrect_input(len(datasets) - 1, output)
             continue
         
         clear()

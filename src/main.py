@@ -1,3 +1,3 @@
-from interface.console_interface import launch
+from console_interface import launch
 
 launch()

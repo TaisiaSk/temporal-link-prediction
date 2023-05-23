@@ -1,7 +1,7 @@
-from properties.graph import Graph
-from properties.data_collection import get_features_as_matrix
-from properties.prediction import prediction
-import properties.basic_properties as bp
+from graph import Graph
+from data_collection import get_features_as_matrix
+from prediction import prediction
+import basic_properties as bp
 
 def task_1(graph : Graph) -> tuple:
     vertices = bp.get_vertices_count(graph)
