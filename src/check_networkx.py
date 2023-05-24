@@ -1,7 +1,7 @@
 import networkx as nx
 from graph import Graph
 import basic_properties
-from main import datasets
+from config import datasets
 
 def __make_graph_nx(graph: Graph):
     graph_nx = nx.Graph()
