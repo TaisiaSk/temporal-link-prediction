@@ -1,0 +1,17 @@
+# expected: results from original article
+
+dataset: ../data/bitcoinotc.tsv
+result: {'AUC-I': 0.8699058116601848, 'AUC-II-A': 0.9249811070355556}
+expected: {'AUC-I': 0.821, 'AUC-II-A': 0.947}
+
+dataset: ../data/bitcoinalpha.tsv
+result: {'AUC-I': 0.8696730049334359, 'AUC-II-A': 0.8883159382204923}
+expected: {'AUC-I': 0.868, 'AUC-II-A': 0.945}
+
+dataset: ../data/email.tsv
+result: {'AUC-I': 0.8224625856683295, 'AUC-II-A': 0.8171631933112655}
+expected: {'AUC-I': 0.864, 'AUC-II-A': 0.921}
+
+dataset: ../data/diggfriends.tsv
+result: {'AUC-I': 0.9471620104508831, 'AUC-II-A': 0.9124052072639014}
+expected: {'AUC-I': 0.891, 'AUC-II-A': 0.926}

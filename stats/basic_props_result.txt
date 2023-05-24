@@ -1,0 +1,26 @@
+# expected: from networkx graph
+
+dataset: ../data/bitcoinotc.tsv
+result: {'density': 0.001242597936253662, 'count_comps': 4, 'avg': 0.1776857752383111, 'assort': -0.16483359451314525}
+{'not_snow': {'radius': 5.0, 'diameter': 8.666666666666666, 'perc90': 5.0}, 'snow': {'radius': 5.0, 'diameter': 7.0, 'perc90': 4.0}}
+expected: {'density': 0.001243020588612932, 'count_comps': 4, 'radius': 5, 'diameter': 9, 'avg': 0.17768577523831092, 'assort': -0.16488726287643696}
+
+dataset: ../data/bitcoinalpha.tsv
+result: {'density': 0.001973332349740885, 'count_comps': 5, 'avg': 0.17700334353599692, 'assort': -0.16851576112150404}
+{'not_snow': {'radius': 5.0, 'diameter': 9.0, 'perc90': 5.0}, 'snow': {'radius': 5.0, 'diameter': 7.666666666666667, 'perc90': 4.0}}
+expected: {'density': 0.001974375888794159, 'count_comps': 5, 'radius': 5, 'diameter': 10, 'avg': 0.17700334353599712, 'assort': -0.16866490564288844}
+
+dataset: ../data/email.tsv
+result: {'density': 0.23167949814656402, 'count_comps': 1, 'avg': 0.5920039640269172, 'assort': -0.29399378998399794}
+{'radius': 3, 'diameter': 5, 'perc90': 3}
+expected: {'density': 0.23454296226823462, 'count_comps': 1, 'radius': 3, 'diameter': 5, 'avg': 0.5918632085486949, 'assort': -0.29444096141120263}
+
+dataset: ../data/ucsocial.tsv
+result: {'density': 0.007670519109780771, 'count_comps': 4, 'avg': 0.10974567163130965, 'assort': -0.1877757871466803}
+{'not_snow': {'radius': 4.0, 'diameter': 8.0, 'perc90': 4.0}, 'snow': {'radius': 4.0, 'diameter': 6.0, 'perc90': 3.0}}
+expected: {'density': 0.007678601848568738, 'count_comps': 4, 'radius': 4, 'diameter': 8, 'avg': 0.10974567163130962, 'assort': -0.18801771829844766}
+
+dataset: ../data/diggfriends.tsv
+result: {'density': 3.955688405289343e-05, 'count_comps': 7136, 'avg': 0.0937963964274682, 'assort': -0.05570734485697098}
+{'not_snow': {'radius': 10.0, 'diameter': 16.333333333333332, 'perc90': 6.0}, 'snow': {'radius': 9.0, 'diameter': 12.333333333333334, 'perc90': 4.0}}
+expected: {'density': 3.95571669769396e-05, 'count_comps': 7136}
