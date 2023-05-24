@@ -1,9 +1,9 @@
 class Graph(object):
     def __init__(self, file_path : str, timestamp_col : int = 3, weight_col : int = 2, 
-                 number_of_lines_to_skip : int = 0, timestamp_filter : int = 100):        
+                 number_of_lines_to_skip : int = 0, timestamp_filter : int = 100, is_multigraph : bool = False):        
         try:
             with open(file_path, "r") as file:
-                self.__init_data_structures(file, timestamp_col, number_of_lines_to_skip)
+                self.__init_data_structures(file, timestamp_col, weight_col, number_of_lines_to_skip, is_multigraph)
                 for _ in range(0, number_of_lines_to_skip):
                     next(file)
 
@@ -27,17 +27,19 @@ class Graph(object):
             print("Could not open/read file: ", file_path)
 
 
-    def __init_data_structures(self, file, timestamp_col : int, number_of_lines_to_skip : int):
-        self.__is_multigraph = False
+    def __init_data_structures(self, file, timestamp_col : int, weight_col : int, 
+                               number_of_lines_to_skip : int, is_multigraph : bool):
+        self.__is_multigraph = is_multigraph
         self.__number_of_edges_without_multiplicity = 0
       
         self.__edges_info = dict()
         self.__timestamps = dict()
-        self.__number_of_vertices, max_vertex_id = self.__numer_of_vertices_from_file(file, timestamp_col, number_of_lines_to_skip)
+        self.__number_of_vertices, max_vertex_id = self.__numer_of_vertices_from_file(file, timestamp_col, weight_col, 
+                                                                                      number_of_lines_to_skip)
         self.__adjacent_vertices = [None for _ in range(max_vertex_id + 1)]
 
 
-    def __numer_of_vertices_from_file(self, file, timestamp_col : int, number_of_lines_to_skip : int) -> tuple:
+    def __numer_of_vertices_from_file(self, file, timestamp_col : int, weight_col : int, number_of_lines_to_skip : int) -> tuple:
         file.seek(0)
         for _ in range(0, number_of_lines_to_skip):
             next(file)
@@ -47,7 +49,11 @@ class Graph(object):
             tokens = line.split()
             v1 = int(tokens[0])
             v2 = int(tokens[1])
+            w = int(tokens[weight_col])
             timestamp = float(tokens[timestamp_col])
+
+            if (w < 0):
+                continue
 
             vertices.add(v1)
             vertices.add(v2)
@@ -169,7 +175,7 @@ class Graph(object):
             self.__number_of_edges_without_multiplicity += 1
 
         if (self.__is_multigraph == False) and (len(self.__adjacent_vertices[vertex_from][vertex_to]) > 0):
-            self.__is_multigraph = True
+            return
 
         self.__adjacent_vertices[vertex_from][vertex_to].add(edge_id)
 
