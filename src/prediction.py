@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 
-def prediction(data: tuple, data_name: str) -> float:
+def prediction(data: tuple, data_name: str, feature_set: str) -> float:
     y, X = data
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -33,11 +33,11 @@ def prediction(data: tuple, data_name: str) -> float:
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Probability')
     plt.ylabel('True Positive Probability')
-    plt.title(f'{data_name.capitalize()} dataset')
+    plt.title(f'{data_name.capitalize()} dataset. {feature_set}')
     plt.legend(loc="lower right")
 
     # Uncomment to save plot
-    # plt.savefig(f'{data_name}.png')
+    # plt.savefig(f'./figures/{data_name}_{feature_set}.png')
 
     plt.show()
 
