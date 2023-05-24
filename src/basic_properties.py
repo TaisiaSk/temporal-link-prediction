@@ -265,8 +265,8 @@ def __estimate_metrics_not_snow(vertices: set, graph: Graph) -> dict:
 
         metrix = __get_metrics_from_distances_list(distances, max_distances)
 
-        # print(f"intermediate distance statistics: {distances}")
-        # print(f"intermediate metrix: {metrix}")
+        print(f"intermediate distance statistics: {distances}")
+        print(f"intermediate metrix: {metrix}")
 
         radius += metrix['radius']
         diameter += metrix['diameter']
@@ -306,8 +306,8 @@ def __estimate_metrics_snow(vertexes, graph):
 
         metrix = __get_metrics_from_distances_list(distances, max_distances)
 
-        # print(f"intermediate distance statistics: {distances}")
-        # print(f"intermediate metrix: {metrix}")
+        print(f"intermediate distance statistics: {distances}")
+        print(f"intermediate metrix: {metrix}")
 
         radius += metrix['radius']
         diameter += metrix['diameter']
@@ -335,7 +335,7 @@ def __get_distance_properties(component, graph):
         print("--- start counting distance metrix for small graph ---")
 
         for idx, v in enumerate(vertices):
-            max_distances.append(__bfs_get_counts_of_vertices_on_distance(v, size, distances, graph))
+            max_distances.append(__bfs_get_counts_of_vertices_on_distance(v, distances, graph))
 
             if ((idx + 1) % 10 == 0):
                 print(f"{idx + 1}/{len(vertices)}")
