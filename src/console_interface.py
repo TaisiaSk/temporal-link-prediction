@@ -72,12 +72,13 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
     current_dataset = datasets[dataset_idx]
     file_path = '../data/' + current_dataset['file_name']
     timestamp_col = current_dataset['timestamp_col']
+    weight_col = current_dataset['weight_col']
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
     properties = __get_properties(current_dataset)
 
     if (len(properties) < 9) and (graph is None):
         if (os.path.isfile(file_path)):
-            graph = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+            graph = Graph(file_path, timestamp_col, weight_col, number_of_lines_to_skip)
         else:
             clear()
             print('Files for graph initialization were not found\n')
