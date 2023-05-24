@@ -10,7 +10,7 @@ from static_features import get_static_properties as get_static
 
 def get_features_as_matrix(dataset : dict, static : bool) -> tuple:
     subdir = 'static/' if (static) else 'temporal/'
-    features_logger = Logger(dir='./features/' + subdir, logs_file_name=dataset['file_name'] + '.json', safe_mode=True)
+    features_logger = Logger(dir='../features/' + subdir, logs_file_name=dataset['file_name'] + '.json', safe_mode=True)
     if (features_logger.is_empty()):
         return None
 
@@ -28,14 +28,14 @@ def get_features_as_matrix(dataset : dict, static : bool) -> tuple:
 
 def collect_features_into_files(dataset : dict, static : bool):
 
-    graph = Graph(file_path = './data/' + dataset['file_name'], 
+    graph = Graph(file_path = '../data/' + dataset['file_name'], 
                   timestamp_col = dataset['timestamp_col'], 
                   number_of_lines_to_skip = dataset['number_of_lines_to_skip'],  
                   timestamp_filter = 100 if (static) else dataset['filter'])
-    features_logger = Logger(dir = './features/' + ('static/' if (static) else 'temporal/'), 
+    features_logger = Logger(dir = '../features/' + ('static/' if (static) else 'temporal/'), 
                              logs_file_name = dataset['file_name'] + '.json', 
                              saving_step = 1000)
-    pairs_logger = Logger(dir = './pairs/', 
+    pairs_logger = Logger(dir = '../pairs/', 
                           logs_file_name = dataset['file_name'] + '.json', 
                           safe_mode = True)
 

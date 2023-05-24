@@ -1,8 +1,12 @@
 from graph import Graph
+from logger import Logger
 from table_maker import table_str
 from tasks import *
 from config import datasets
 import os
+import json
+
+properties_path = '../properties/properties.json'
 
 tasks_to_output = [{'name' : 'Number of vertices, number of edges, density...', 'func' : task_1}, 
                    {'name' : 'Radius, network diameter, 90 percentile...', 'func' : task_2}, 
@@ -15,7 +19,6 @@ if os.name == 'nt':
 else:
     clear = lambda: os.system('clear')
 
-
 def __incorrect_input(range_to : int, output : str):
     output = f'Input must be a number of range [-1, {range_to}]\n\n'
     output += 'Press any button to continue'
@@ -24,22 +27,63 @@ def __incorrect_input(range_to : int, output : str):
     input()
     output = ''
 
-
-def __results_as_table(graph : Graph, function : callable, table_len : int = 100) -> str:
-    heading, values = function(graph)
+def __results_as_table(graph : Graph, function : callable, properties : dict, table_len : int = 100) -> str:
+    heading, values = function(graph, properties)
     if (heading is None) or (values is None):
         return ''
     return table_str(heading, values, table_len)
 
+def __get_properties(dataset : dict) -> dict:
+    try:
+        if not (os.path.isfile(properties_path)):
+            return dict()
+        with open(properties_path, 'r') as file:
+            all_props = json.load(file)
+        return all_props[dataset['file_name']] if (dataset['file_name'] in all_props) else dict()
+    except OSError:
+        print("Could not open/read file: ", properties_path)
+        input()
+    except Exception:
+        print("Could not parse json: ", properties_path)
+        input()
+
+    pass
+
+def __save_properties(dataset : dict, properties : dict) -> None:
+    try:
+        if (os.path.isfile(properties_path)):
+            with open(properties_path, 'r') as file:
+                all_props = json.load(file)
+        else:
+            all_props =  dict()
+
+        all_props[dataset['file_name']] = properties
+
+        with open(properties_path, 'w+') as file:
+            json.dump(all_props, file)
+    except OSError:
+        print("Could not open/read file: ", properties_path)
+        input()
+    except Exception:
+        print("Could not parse json: ", properties_path)
+        input()
 
 def __results_section(dataset_idx : int, output : str = '', graph : Graph = None) -> str:
     current_dataset = datasets[dataset_idx]
-    file_path = './data/' + current_dataset['file_name']
+    file_path = '../data/' + current_dataset['file_name']
     timestamp_col = current_dataset['timestamp_col']
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
+    properties = __get_properties(current_dataset)
 
-    if (graph is None):
-        graph = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+    if (len(properties) != 9) and (graph is None):
+        if (os.path.isfile(file_path)):
+            graph = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+        else:
+            clear()
+            print('Files for graph initialization were not found\n')
+            print('Press any button to continue')
+            input()
+            return None, __datasets_section, None
 
     while True:
         output += 'You have chosen: ' + str(current_dataset['file_name']) + '\n\n'
@@ -71,7 +115,9 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
 
         clear()
         print('Wait a moment...')
-        table = __results_as_table(graph, tasks_to_output[task_idx]['func'], table_len=100) + '\n\n'
+        table = __results_as_table(graph, tasks_to_output[task_idx]['func'], properties, table_len=100) + '\n\n'
+        if not (graph is None):
+            __save_properties(current_dataset, properties)
         output = 'You have chosen: ' + str(tasks_to_output[task_idx]['name']) + '\n\n' + table
         output += 'Press any button to continue'
         clear()
