@@ -1,4 +1,6 @@
 from graph import Graph
+from data_collection import get_features_as_matrix
+from prediction import prediction
 import basic_properties as bp
 
 def task_1(graph : Graph) -> tuple:
@@ -10,6 +12,7 @@ def task_1(graph : Graph) -> tuple:
 
     heading = ('Vertices', 'Edges', 'Dencity', 'Components', 'Percentage')
     values = (vertices, edges, dencity, components, percentage)
+
     return heading, values
 
 def task_2(graph : Graph) -> tuple:
@@ -31,6 +34,7 @@ def task_3(graph : Graph) -> tuple:
     
     heading = ('Average clustering coefficient',)
     values = (coefficient,)
+
     return heading, values
 
 def task_4(graph : Graph) -> tuple:
@@ -38,4 +42,17 @@ def task_4(graph : Graph) -> tuple:
 
     heading = ('Degree assortativity',)
     values = (coefficient,)
+
     return heading, values
+
+def task_5(dataset : dict, static : bool) -> tuple:
+    data = get_features_as_matrix(dataset, static)
+    feture_set = 'I' if static else 'II-A'
+
+    if (data is None):
+        return None
+    
+    heading = ('Precision',)
+    values = (prediction(data, dataset['file_name'].split('.')[0], feture_set),)
+
+    return heading, values 
