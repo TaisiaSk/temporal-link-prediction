@@ -148,8 +148,8 @@ def __count_appearance(logger : Logger) -> list:
 def __find_double_neighbors(graph_full : Graph, graph_cut : Graph, src : int, logger : Logger, 
                           found_0 : int = 0, found_1 : int = 0, max_amount : int = 10000) -> tuple:
     
-    visited = [False for _ in range(graph_full.number_of_vertices())]
-    prev = [-1 for _ in range(graph_full.number_of_vertices())]
+    visited = [False for _ in range(graph_full.max_vertex_id() + 1)]
+    prev = [-1 for _ in range(graph_full.max_vertex_id() + 1)]
     
     queue = deque()  
     queue.append(src)
@@ -190,7 +190,7 @@ def __approximate_pairs_collection(graph_full : Graph, graph_cut : Graph, logger
     max_amount = 10000
 
     for _ in range(10000):
-        src = random.randint(1, graph_full.number_of_vertices() - 1)
+        src = random.randint(1, graph_full.max_vertex_id())
         found_0, found_1 = __find_double_neighbors(graph_full, graph_cut, src, logger, found_0, found_1)
         print(found_0, found_1)
         if (found_0 >= max_amount) and (found_1 >= max_amount):
@@ -215,3 +215,12 @@ def __add_pairs_wich_will_appear(graph_cut : Graph, logger : Logger, filter : in
     logger.dump()
 
 ##########################################################__COLLECTION__##########################################################
+for dataset in datasets:
+    print(dataset['file_name'])
+    file_path = '../data/' + dataset['file_name']
+    weight_col = dataset['weight_col']
+    timestamp_col = dataset['timestamp_col']
+    number_of_lines_to_skip = dataset['number_of_lines_to_skip']
+    filter = dataset['filter']
+    g = Graph(file_path, timestamp_col, weight_col, number_of_lines_to_skip)
+    print(g.number_of_vertices(), g.number_of_edges(), g.number_of_edges(True))
