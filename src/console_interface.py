@@ -75,7 +75,7 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
     properties = __get_properties(current_dataset)
 
-    if (len(properties) != 9) and (graph is None):
+    if (len(properties) < 9) and (graph is None):
         if (os.path.isfile(file_path)):
             graph = Graph(file_path, timestamp_col, number_of_lines_to_skip)
         else:
