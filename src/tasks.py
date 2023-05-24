@@ -61,10 +61,13 @@ def task_4(graph : Graph, properties : dict) -> tuple:
 
 def task_5(dataset : dict, static : bool) -> tuple:
     data = get_features_as_matrix(dataset, static)
+    feture_set = 'I' if static else 'II-A'
+
     if (data is None):
         return None
+
     heading = ('Precision',)
-    values = (prediction(data, dataset['file_name'].split('.')[0]),)
+    values = (prediction(data, dataset['file_name'].split('.')[0], feture_set),)
     return heading, values 
 
 def __append_all(metrics : dict, properties : dict) -> None:
