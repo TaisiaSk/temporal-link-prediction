@@ -245,12 +245,13 @@ def check_patrition():
         
 
 def collect_all_data():
-    # for dataset in datasets:
-    #     collect_pairs_into_files(dataset)
-    # for dataset in datasets:
-    #     collect_features_into_files(dataset, static=True, maximize=True)
+    for dataset in datasets:
+        collect_pairs_into_files(dataset)
+    for dataset in datasets:
+        collect_features_into_files(dataset, static=True, maximize=True)
     for dataset in datasets:
         collect_features_into_files(dataset, static=False, maximize=True)
+
 
 # collect_all_data()           
 # check_patrition()             
