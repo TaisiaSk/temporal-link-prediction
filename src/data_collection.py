@@ -46,11 +46,13 @@ def get_features_as_matrix(dataset : dict, static : bool, max_amount : int = Non
 
     return np.array(vector), np.nan_to_num(np.array(matrix), posinf=0, neginf=0)
 
-def collect_features_into_files(dataset : dict, static : bool, max_amount : int = None) -> None:
+def collect_features_into_files(dataset : dict, static : bool, max_amount : int = None, maximize : bool = False) -> None:
     graph = Graph(file_path = '../data/' + dataset['file_name'], 
                   timestamp_col = dataset['timestamp_col'], 
+                  weight_col = dataset['weight_col'],
                   number_of_lines_to_skip = dataset['number_of_lines_to_skip'],  
-                  timestamp_filter = 100 if (static) else dataset['filter'])
+                  timestamp_filter = 100 if (static) else dataset['filter'], 
+                  is_multigraph = dataset['is_multigraph'])
     features_logger = Logger(dir = '../features/' + ('static/' if (static) else 'temporal/'), 
                              logs_file_name = dataset['file_name'] + '.json', 
                              saving_step = 1000)
@@ -60,8 +62,9 @@ def collect_features_into_files(dataset : dict, static : bool, max_amount : int 
 
     pairs_list = pairs_logger.get_pairs()
     if (max_amount is None):
-        max_amount = min(len([pair for pair in pairs_list if pair[2] == 0]), 
-                        len([pair for pair in pairs_list if pair[2] == 1]))
+        min_or_max = max if (maximize) else min
+        max_amount = min_or_max(len([pair for pair in pairs_list if pair[2] == 0]), 
+                                len([pair for pair in pairs_list if pair[2] == 1]))
 
     features_list = features_logger.get_features()
     features_counter = [len([feature for feature in features_list if feature[0] == 0]), 
@@ -106,19 +109,24 @@ def get_number_of_pairs(dataset : dict) -> list:
     logger = Logger(dir='../pairs/', logs_file_name=dataset['file_name'] + '.json', safe_mode=True)
     return __count_appearance(logger)
 
-def collect_pairs_into_files(dataset : dict) -> None:
+def collect_pairs_into_files(dataset : dict, max_amount : int = 10000) -> None:
     logger = Logger(dir='../pairs/', logs_file_name=dataset['file_name'] + '.json', saving_step=100)
 
     file_path = '../data/' + dataset['file_name']
     timestamp_col = dataset['timestamp_col']
+    weight_col = dataset['weight_col']
     number_of_lines_to_skip = dataset['number_of_lines_to_skip']
     filter = dataset['filter']
+    is_multigraph = dataset['is_multigraph']
 
-    graph_full = Graph(file_path, timestamp_col, number_of_lines_to_skip)
-    graph_cut = Graph(file_path, timestamp_col, number_of_lines_to_skip, filter)
+    graph_full = Graph(file_path=file_path, timestamp_col=timestamp_col, weight_col=weight_col, 
+                       number_of_lines_to_skip=number_of_lines_to_skip, is_multigraph=is_multigraph)
+    graph_cut = Graph(file_path=file_path, timestamp_col=timestamp_col, weight_col=weight_col, 
+                       number_of_lines_to_skip=number_of_lines_to_skip, timestamp_filter=filter, is_multigraph=is_multigraph)
 
-    __approximate_pairs_collection(graph_full, graph_cut, logger)
-    __add_pairs_wich_will_appear(graph_cut, logger, filter)
+    found = __approximate_pairs_collection(graph_full, graph_cut, logger)
+    if (found[1] < max_amount):
+        __add_pairs_wich_will_appear(graph_cut, logger, filter)
     __check_correctness(graph_full, graph_cut, logger)
     print(__count_appearance(logger))
 
@@ -131,10 +139,13 @@ def __check_correctness(graph_full : Graph, graph_cut : Graph, logger : Logger) 
 
         if (graph_cut.has_edges_between(v1, v2)):
             print('Has edge between:', v1, v2, appearance)
+            input()
         if (appearance == 0) and (graph_full.has_edges_between(v1, v2)):
             print('Edge will appear:', v1, v2, appearance)
+            input()
         if (appearance == 1) and not (graph_full.has_edges_between(v1, v2)):
             print('Edge will not appear:', v1, v2, appearance)
+            input()
 
 def __count_appearance(logger : Logger) -> list:
     pairs = logger.get_pairs()
@@ -148,8 +159,8 @@ def __count_appearance(logger : Logger) -> list:
 def __find_double_neighbors(graph_full : Graph, graph_cut : Graph, src : int, logger : Logger, 
                           found_0 : int = 0, found_1 : int = 0, max_amount : int = 10000) -> tuple:
     
-    visited = [False for _ in range(graph_full.number_of_vertices())]
-    prev = [-1 for _ in range(graph_full.number_of_vertices())]
+    visited = [False for _ in range(graph_full.max_vertex_id() + 1)]
+    prev = [-1 for _ in range(graph_full.max_vertex_id() + 1)]
     
     queue = deque()  
     queue.append(src)
@@ -183,20 +194,22 @@ def __find_double_neighbors(graph_full : Graph, graph_cut : Graph, src : int, lo
     
     return found_0, found_1    
 
-def __approximate_pairs_collection(graph_full : Graph, graph_cut : Graph, logger : Logger) -> None:
+def __approximate_pairs_collection(graph_full : Graph, graph_cut : Graph, logger : Logger, max_amount : int = 10000) -> list:
     logs = logger.get_pairs()
     found_0 = len([pair for pair in logs if pair[2] == 0])
     found_1 = len([pair for pair in logs if pair[2] == 1])
-    max_amount = 10000
 
-    for _ in range(10000):
-        src = random.randint(1, graph_full.number_of_vertices() - 1)
-        found_0, found_1 = __find_double_neighbors(graph_full, graph_cut, src, logger, found_0, found_1)
+    for _ in range(1000):
+        src = random.randint(1, graph_full.max_vertex_id())
+        found_0, found_1 = __find_double_neighbors(graph_full, graph_cut, src, logger, found_0, found_1, max_amount)
         print(found_0, found_1)
         if (found_0 >= max_amount) and (found_1 >= max_amount):
-            return
+            logger.dump()
+            return [found_0, found_1]
     
     logger.dump()
+    return [found_0, found_1]
+
 
 def __add_pairs_wich_will_appear(graph_cut : Graph, logger : Logger, filter : int) -> None:
     for edge in graph_cut.edges_that_will_appear(filter):
@@ -215,3 +228,29 @@ def __add_pairs_wich_will_appear(graph_cut : Graph, logger : Logger, filter : in
     logger.dump()
 
 ##########################################################__COLLECTION__##########################################################
+
+def check_patrition():
+    for dataset in datasets:
+        print(dataset['file_name'])
+        file_path = '../data/' + dataset['file_name']
+        timestamp_col = dataset['timestamp_col']
+        weight_col = dataset['weight_col']
+        number_of_lines_to_skip = dataset['number_of_lines_to_skip']
+        filter = dataset['filter']
+        is_multigraph = dataset['is_multigraph']
+
+        graph_full = Graph(file_path=file_path, timestamp_col=timestamp_col, weight_col=weight_col, 
+                        number_of_lines_to_skip=number_of_lines_to_skip, timestamp_filter=filter, is_multigraph=is_multigraph)
+        print(graph_full.cut_proportion())
+        
+
+def collect_all_data():
+    for dataset in datasets:
+        collect_pairs_into_files(dataset)
+    for dataset in datasets:
+        collect_features_into_files(dataset, static=True, maximize=True)
+    for dataset in datasets:
+        collect_features_into_files(dataset, static=False, maximize=True)
+
+# collect_all_data()           
+# check_patrition()             
