@@ -55,7 +55,7 @@ def collect_features_into_files(dataset : dict, static : bool, max_amount : int 
                   is_multigraph = dataset['is_multigraph'])
     features_logger = Logger(dir = '../features/' + ('static/' if (static) else 'temporal/'), 
                              logs_file_name = dataset['file_name'] + '.json', 
-                             saving_step = 1000)
+                             saving_step = 1000 if (static) else 100)
     pairs_logger = Logger(dir = '../pairs/', 
                           logs_file_name = dataset['file_name'] + '.json', 
                           safe_mode = True)
@@ -245,10 +245,10 @@ def check_patrition():
         
 
 def collect_all_data():
-    for dataset in datasets:
-        collect_pairs_into_files(dataset)
-    for dataset in datasets:
-        collect_features_into_files(dataset, static=True, maximize=True)
+    # for dataset in datasets:
+    #     collect_pairs_into_files(dataset)
+    # for dataset in datasets:
+    #     collect_features_into_files(dataset, static=True, maximize=True)
     for dataset in datasets:
         collect_features_into_files(dataset, static=False, maximize=True)
 
