@@ -78,8 +78,7 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
 
     if (len(properties) < 9) and (graph is None):
         if (os.path.isfile(file_path)):
-            graph = None
-            # graph = Graph(file_path, timestamp_col, weight_col, number_of_lines_to_skip)
+            graph = Graph(file_path, timestamp_col, weight_col, number_of_lines_to_skip)
         else:
             clear()
             print('Files for graph initialization were not found\n')

@@ -103,7 +103,7 @@ def __fill_to_max(matrix : list, vector : list, counter : list, max_amount : int
                 vector.append(vector[i])
                 matrix.append(__process_vector(matrix[i]))
 
-def __process_vector(vector : list, noise_factor : float = 0.1) -> list:
+def __process_vector(vector : list, noise_factor : float = 0.01) -> list:
     for i in range(len(vector)):
         vector[i] += random.randrange(-1, 1) * vector[i] * noise_factor * random.random()
     return vector
@@ -250,27 +250,10 @@ def check_patrition():
         
 
 def collect_all_data():
-    # for dataset in datasets:
-    #     collect_pairs_into_files(dataset)
     for dataset in datasets:
-        collect_features_into_files(dataset, static=True, maximize=True)
-    # for dataset in datasets:
-    #     collect_features_into_files(dataset, static=False, maximize=True)
+        collect_pairs_into_files(dataset)
+    for dataset in datasets:
+        collect_features_into_files(dataset, static=False, maximize=True)
+    for dataset in datasets:
+        collect_features_into_files(dataset, static=False, maximize=True)
 
-
-collect_all_data()
-
-# for dataset in datasets[1 : 2]:
-    
-#     subdir = 'static/'
-#     input = Logger(dir='../features/' + subdir, logs_file_name=dataset['file_name'] + '.json', saving_step=100, safe_mode=True)
-#     output = Logger(dir='../features/' + subdir, logs_file_name=dataset['file_name'] + '.json', saving_step=100)
-#     max_amount = 804
-#     cnt = [0, 0]
-#     for feature in input.get_features():
-#         app = feature[0]
-#         if (cnt[app] > max_amount):
-#             continue
-        
-#     print(get_number_of_features(dataset, static=True), get_number_of_features(dataset, static=False))
-          
