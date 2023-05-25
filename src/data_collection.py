@@ -51,7 +51,7 @@ def collect_features_into_files(dataset : dict, static : bool, max_amount : int 
                   timestamp_col = dataset['timestamp_col'], 
                   weight_col = dataset['weight_col'],
                   number_of_lines_to_skip = dataset['number_of_lines_to_skip'],  
-                  timestamp_filter = 100 if (static) else dataset['filter'], 
+                  timestamp_filter =dataset['filter'], 
                   is_multigraph = dataset['is_multigraph'])
     features_logger = Logger(dir = '../features/' + ('static/' if (static) else 'temporal/'), 
                              logs_file_name = dataset['file_name'] + '.json', 
