@@ -41,7 +41,7 @@ def get_features_as_matrix(dataset : dict, static : bool, max_amount : int = Non
         feature.pop(0)
         matrix.append(feature)
 
-    if (vectors_equalization) and (counter[0] != counter[1]):
+    if (vectors_equalization):
         __equalize(matrix, vector, counter, max_amount)
 
     return np.array(vector), np.nan_to_num(np.array(matrix), posinf=0, neginf=0)
@@ -51,11 +51,11 @@ def collect_features_into_files(dataset : dict, static : bool, max_amount : int 
                   timestamp_col = dataset['timestamp_col'], 
                   weight_col = dataset['weight_col'],
                   number_of_lines_to_skip = dataset['number_of_lines_to_skip'],  
-                  timestamp_filter = 100 if (static) else dataset['filter'], 
+                  timestamp_filter =dataset['filter'], 
                   is_multigraph = dataset['is_multigraph'])
     features_logger = Logger(dir = '../features/' + ('static/' if (static) else 'temporal/'), 
                              logs_file_name = dataset['file_name'] + '.json', 
-                             saving_step = 1000)
+                             saving_step = 1000 if (static) else 100)
     pairs_logger = Logger(dir = '../pairs/', 
                           logs_file_name = dataset['file_name'] + '.json', 
                           safe_mode = True)
@@ -101,7 +101,12 @@ def __fill_to_max(matrix : list, vector : list, counter : list, max_amount : int
             if (vector[i] == appearance):
                 counter[appearance] += 1
                 vector.append(vector[i])
-                matrix.append(matrix[i])
+                matrix.append(__process_vector(matrix[i]))
+
+def __process_vector(vector : list, noise_factor : float = 0.01) -> list:
+    for i in range(len(vector)):
+        vector[i] += random.randrange(-1, 1) * vector[i] * noise_factor * random.random()
+    return vector
 
 ##########################################################__PAIRS__##########################################################
 
@@ -248,9 +253,7 @@ def collect_all_data():
     for dataset in datasets:
         collect_pairs_into_files(dataset)
     for dataset in datasets:
-        collect_features_into_files(dataset, static=True, maximize=True)
+        collect_features_into_files(dataset, static=False, maximize=True)
     for dataset in datasets:
         collect_features_into_files(dataset, static=False, maximize=True)
 
-# collect_all_data()           
-# check_patrition()             

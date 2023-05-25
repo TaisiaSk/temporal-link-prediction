@@ -103,6 +103,7 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
 
         if not (task_idx.isdigit()):
             __incorrect_input(len(tasks_to_output) - 1, output)
+            output = ''
             continue
         
         task_idx = int(task_idx)
@@ -112,6 +113,7 @@ def __results_section(dataset_idx : int, output : str = '', graph : Graph = None
 
         if (task_idx < 0) or (task_idx >= len(tasks_to_output)):
             __incorrect_input(len(tasks_to_output) - 1, output)
+            output = ''
             continue
 
         clear()
@@ -144,6 +146,7 @@ def __prediction_section(dataset_idx : int, output : str = '', graph : Graph = N
 
         if not (task_idx.isdigit()):
             __incorrect_input(1, output)
+            output = ''
             continue
         
         task_idx = int(task_idx)
@@ -169,6 +172,7 @@ def __prediction_section(dataset_idx : int, output : str = '', graph : Graph = N
             output = ''
         else:
             __incorrect_input(1, output)
+            output = ''
 
 
 def __datasets_section(dataset_idx : int, output : str = '', graph : Graph = None) -> tuple:
@@ -188,11 +192,13 @@ def __datasets_section(dataset_idx : int, output : str = '', graph : Graph = Non
 
         if not (idx.isdigit()):
             __incorrect_input(len(datasets) - 1, output)
+            output = ''
             continue
         
         idx = int(idx)
         if (idx < 0) or (idx >= len(datasets)):
             __incorrect_input(len(datasets) - 1, output)
+            output = ''
             continue
         
         clear()
