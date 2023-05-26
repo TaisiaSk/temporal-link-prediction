@@ -30,11 +30,11 @@ def get_percentage(graph: Graph) -> float:
     return __percent_of_vertices(components, graph)
 
 # Radius, diameter and 90perc
-def get_metrics(graph: Graph) -> dict:
+def get_metrics(graph: Graph, small_graph_size = 500) -> dict:
     components = __get_components(graph)
     max_component = __find_max_component(components)
 
-    return __get_distance_properties(max_component, graph)
+    return __get_distance_properties(max_component, graph, small_graph_size=small_graph_size)
 
 # Average clustering coefficient
 def get_avg_coeff(graph) -> float:
@@ -323,8 +323,7 @@ def __estimate_metrics_snow(vertexes, graph):
 # returns:
 # d_metrics = {'radius', 'diameter', 'perc90'} for SMALL
 # d_metrics = {'snow': {'radius', 'diameter', 'perc90'}, 'not_snow': {'radius', 'diameter', 'perc90'}} for BIG
-def __get_distance_properties(component, graph):
-    small_graph_size = 500
+def __get_distance_properties(component, graph, small_graph_size = 500):
     root, size = component
     vertices = __get_component_vertices(root, graph)
 
