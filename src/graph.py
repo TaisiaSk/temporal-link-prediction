@@ -17,7 +17,7 @@ class Graph(object):
                     w = int(tokens[weight_col])
                     timestamp = float(tokens[timestamp_col])
 
-                    if (w < 0) or (timestamp > filter):
+                    if (w < 0) or (timestamp > filter) or (v1 == v2):
                         continue
 
                     self.add_edge(v1, v2, edge_id, timestamp)
