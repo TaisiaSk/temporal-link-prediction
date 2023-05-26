@@ -29,7 +29,8 @@ def get_static_properties(u: int, v: int, graph: Graph):
 
     common_neighbours = adj_u.intersection(adj_v)
     union = adj_u.union(adj_v)
-    
+
+
     return [__get_CN(common_neighbours), \
             __get_AA(common_neighbours, graph), \
             __get_JC(common_neighbours, union), \

@@ -5,5 +5,13 @@
 
 datasets = [
     {'file_name' : 'socfb-Middlebury45.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
-    {'file_name' : 'socfb-Reed98.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True}
+   {'file_name' : 'socfb-Reed98.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_1.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_2.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_3.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_4.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_5.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_6.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
+   {'file_name' : 'testgraph_7.txt', 'weight_col' : None, 'timestamp_col' : None, 'number_of_lines_to_skip' : 0, 'filter' : None, 'is_multigraph' : True},
 ]
+
