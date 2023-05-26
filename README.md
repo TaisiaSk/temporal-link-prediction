@@ -21,3 +21,7 @@ For each dataset that you want to process, you must describe the following param
 - `number_of_lines_to_skip` - Number of `.tsv` file header lines to skip when parsing
 - `filter` - It is measured from 0 to 100 and describes the timestamp by which the time slice of the graph will be performed (set 50 by default)
 - `is_multigraph` - When parsing a graph, it does not take into account multiple edges
+
+## Original repository
+
+The original commit history tracking repository can be found at the link: https://github.com/TaisiaSk/temporal-link-prediction.git
