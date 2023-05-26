@@ -27,10 +27,7 @@ class Graph(object):
                             continue
                     else: 
                         timestamp = None
-
-                    if (v1 == v2):
-                        continue
-
+                        
                     self.add_edge(v1, v2, edge_id, timestamp)
                     edge_id += 1
 
