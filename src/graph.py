@@ -27,7 +27,7 @@ class Graph(object):
                             continue
                     else: 
                         timestamp = None
-                        
+
                     self.add_edge(v1, v2, edge_id, timestamp)
                     edge_id += 1
 
@@ -184,7 +184,8 @@ class Graph(object):
     def __add_edge_to_list(self, vertex_from : int, vertex_to : int, edge_id : int) -> None:
         if (vertex_to not in self.__adjacent_vertices[vertex_from]):
             self.__adjacent_vertices[vertex_from][vertex_to] = set()
-            self.__number_of_edges_without_multiplicity += 1
+            if (vertex_from != vertex_to):
+                self.__number_of_edges_without_multiplicity += 1
 
         if (self.__is_multigraph == False) and (len(self.__adjacent_vertices[vertex_from][vertex_to]) > 0):
             return
