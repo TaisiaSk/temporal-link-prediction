@@ -1,7 +1,7 @@
 import networkx as nx
 from graph import Graph
 import basic_properties
-from main import datasets
+from config import datasets
 
 def __make_graph_nx(graph: Graph):
     graph_nx = nx.Graph()
@@ -30,9 +30,17 @@ for current_dataset in datasets:
     print(f'--- start counting basic props for {file_path}')
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
     timestamp_col = current_dataset['timestamp_col']
-    graph = Graph(file_path, timestamp_col, number_of_lines_to_skip)
+    graph = Graph(file_path, timestamp_col, current_dataset['weight_col'], number_of_lines_to_skip)
 
     graph_nx = __make_graph_nx(graph)
+
+    #v_g = graph.number_of_vertices()
+    #ed_g = graph.number_of_edges(without_multiplicity=True)
+    #v_nx = graph_nx.number_of_nodes()
+    #ed_nx = graph_nx.number_of_edges()
+    #print(f'v_g: {v_g}, ed_g: {ed_g}\nv_nx: {v_nx}, ed_nx: {ed_nx}')
+    #continue
+
     properties_graph = {'density': 0, 'count_comps': 0, 'avg': 0, 'assort': 0}
     properties_nx = {'density': 0, 'count_comps': 0, 'radius': 0, 'diameter': 0, 'avg': 0, 'assort': 0}
 

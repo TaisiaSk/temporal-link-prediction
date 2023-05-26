@@ -1,26 +1,29 @@
-# expected: from networkx graph
-
 dataset: ../data/bitcoinotc.tsv
-result: {'density': 0.001242597936253662, 'count_comps': 4, 'avg': 0.1776857752383111, 'assort': -0.16483359451314525}
-{'not_snow': {'radius': 5.0, 'diameter': 8.666666666666666, 'perc90': 5.0}, 'snow': {'radius': 5.0, 'diameter': 7.0, 'perc90': 4.0}}
-expected: {'density': 0.001243020588612932, 'count_comps': 4, 'radius': 5, 'diameter': 9, 'avg': 0.17768577523831092, 'assort': -0.16488726287643696}
+result: {'density': 0.0011973816430335524, 'count_comps': 9, 'avg': 0.16382704130749667, 'assort': -0.14488431695962903}
+{'not_snow': {'radius': 8.0, 'diameter': 14.0, 'perc90': 5.0}, 'snow': {'radius': 8.0, 'diameter': 11.0, 'perc90': 4.0}}
+expected: {'density': 0.0011973816430335524, 'count_comps': 9, 'radius': 7, 'diameter': 14, 'avg': 0.1638270413074965, 'assort': -0.1451471204438922}
 
 dataset: ../data/bitcoinalpha.tsv
-result: {'density': 0.001973332349740885, 'count_comps': 5, 'avg': 0.17700334353599692, 'assort': -0.16851576112150404}
-{'not_snow': {'radius': 5.0, 'diameter': 9.0, 'perc90': 5.0}, 'snow': {'radius': 5.0, 'diameter': 7.666666666666667, 'perc90': 4.0}}
-expected: {'density': 0.001974375888794159, 'count_comps': 5, 'radius': 5, 'diameter': 10, 'avg': 0.17700334353599712, 'assort': -0.16866490564288844}
+result: {'density': 0.001913160618918964, 'count_comps': 7, 'avg': 0.16766891364797273, 'assort': -0.15388430710066606}
+{'not_snow': {'radius': 6.0, 'diameter': 10.0, 'perc90': 5.0}, 'snow': {'radius': 6.0, 'diameter': 7.333333333333333, 'perc90': 4.0}}
+expected: {'density': 0.001913160618918964, 'count_comps': 7, 'radius': 6, 'diameter': 10, 'avg': 0.1676689136479729, 'assort': -0.15413982732619097}
 
 dataset: ../data/email.tsv
-result: {'density': 0.23167949814656402, 'count_comps': 1, 'avg': 0.5920039640269172, 'assort': -0.29399378998399794}
+result: {'density': 0.2344708174013419, 'count_comps': 1, 'avg': 0.5918632085486948, 'assort': -0.2951772978930206}
 {'radius': 3, 'diameter': 5, 'perc90': 3}
-expected: {'density': 0.23454296226823462, 'count_comps': 1, 'radius': 3, 'diameter': 5, 'avg': 0.5918632085486949, 'assort': -0.29444096141120263}
+expected: {'density': 0.2344708174013419, 'count_comps': 1, 'radius': 3, 'diameter': 5, 'avg': 0.5918632085486949, 'assort': -0.2951772978930192}
 
-dataset: ../data/ucsocial.tsv
-result: {'density': 0.007670519109780771, 'count_comps': 4, 'avg': 0.10974567163130965, 'assort': -0.1877757871466803}
-{'not_snow': {'radius': 4.0, 'diameter': 8.0, 'perc90': 4.0}, 'snow': {'radius': 4.0, 'diameter': 6.0, 'perc90': 3.0}}
-expected: {'density': 0.007678601848568738, 'count_comps': 4, 'radius': 4, 'diameter': 8, 'avg': 0.10974567163130962, 'assort': -0.18801771829844766}
+dataset: ../data/askubuntu.tsv
+result: {'density': 3.590743517701151e-05, 'count_comps': 4250, 'avg': 0.1141079908055676, 'assort': -0.15579227340768428}
+{'not_snow': {'radius': 7.0, 'diameter': 11.0, 'perc90': 5.0}, 'snow': {'radius': 7.0, 'diameter': 9.0, 'perc90': 4.0}}
+expected: {'density': 3.590743517701151e-05, 'count_comps': 4250, 'radius': 0, 'diameter': 0, 'avg': 0, 'assort': 0}
 
-dataset: ../data/diggfriends.tsv
-result: {'density': 3.955688405289343e-05, 'count_comps': 7136, 'avg': 0.0937963964274682, 'assort': -0.05570734485697098}
-{'not_snow': {'radius': 10.0, 'diameter': 16.333333333333332, 'perc90': 6.0}, 'snow': {'radius': 9.0, 'diameter': 12.333333333333334, 'perc90': 4.0}}
-expected: {'density': 3.95571669769396e-05, 'count_comps': 7136}
+dataset: ../data/superuser.tsv
+result: {'density': 3.793962802812535e-05, 'count_comps': 3197, 'avg': 0.11913580396187416, 'assort': -0.09355372139167964}
+{'not_snow': {'radius': 7.0, 'diameter': 10.666666666666666, 'perc90': 5.0}, 'snow': {'radius': 6.0, 'diameter': 9.0, 'perc90': 4.0}}
+expected: {'density': 3.793962802812535e-05, 'count_comps': 3197, 'radius': 0, 'diameter': 0, 'avg': 0, 'assort': 0}
+
+dataset: ../data/digg.tsv
+result: {'density': 3.9597733445847886e-05, 'count_comps': 6863, 'avg': 0.09685343001219744, 'assort': -0.055709574494070574}
+{'not_snow': {'radius': 10.0, 'diameter': 15.0, 'perc90': 6.0}, 'snow': {'radius': 9.0, 'diameter': 11.333333333333334, 'perc90': 4.0}}
+expected: {'density': 3.9597733445847886e-05, 'count_comps': 6863, 'radius': 0, 'diameter': 0, 'avg': 0, 'assort': 0}
