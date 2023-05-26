@@ -22,6 +22,11 @@ For each dataset that you want to process, you must describe the following param
 - `filter` - It is measured from 0 to 100 and describes the timestamp by which the time slice of the graph will be performed (set 50 by default)
 - `is_multigraph` - When parsing a graph, it does not take into account multiple edges
 
+## Results and tests
+
+- The network properties calculated by us (for static graphs) and their comparison with the reference solutions obtained using the `NetworkX` library are located in the folder `./stats`
+- Charts for assessing the quality of our model for predicting the appearance of edges in a graph can be found in the folder `./figures`
+
 ## Original repository
 
 The original commit history tracking repository can be found at the link: https://github.com/TaisiaSk/temporal-link-prediction.git
