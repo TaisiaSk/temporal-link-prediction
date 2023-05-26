@@ -3,6 +3,7 @@ from data_collection import get_features_as_matrix
 from prediction import prediction
 import basic_properties as bp
 
+
 def task_1(graph : Graph, properties : dict) -> tuple:
     if not ('vertices' in properties):
         properties['vertices'] = bp.get_vertices_count(graph)

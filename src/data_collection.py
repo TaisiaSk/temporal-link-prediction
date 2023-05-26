@@ -7,6 +7,7 @@ from collections import deque
 from temporal_features import get_temporal_features as get_temporal
 from static_features import get_static_properties as get_static
 
+
 ##########################################################__FEATURES__##########################################################
 
 def get_number_of_features(dataset : dict, static : bool) -> list:
@@ -51,7 +52,7 @@ def collect_features_into_files(dataset : dict, static : bool, max_amount : int 
                   timestamp_col = dataset['timestamp_col'], 
                   weight_col = dataset['weight_col'],
                   number_of_lines_to_skip = dataset['number_of_lines_to_skip'],  
-                  timestamp_filter =dataset['filter'], 
+                  timestamp_filter = dataset['filter'], 
                   is_multigraph = dataset['is_multigraph'])
     features_logger = Logger(dir = '../features/' + ('static/' if (static) else 'temporal/'), 
                              logs_file_name = dataset['file_name'] + '.json', 
@@ -253,7 +254,6 @@ def collect_all_data():
     for dataset in datasets:
         collect_pairs_into_files(dataset)
     for dataset in datasets:
-        collect_features_into_files(dataset, static=False, maximize=True)
+        collect_features_into_files(dataset, static=True, maximize=True)
     for dataset in datasets:
         collect_features_into_files(dataset, static=False, maximize=True)
-

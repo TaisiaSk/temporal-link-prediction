@@ -117,7 +117,3 @@ def get_temporal_features(u: int, v: int, graph: Graph) -> np.ndarray:
     jc /= (sum_from_u + sum_from_v)
 
     return np.concatenate((aa, cn, jc, pa), axis=None)
-
-
-############################################################################################
-
