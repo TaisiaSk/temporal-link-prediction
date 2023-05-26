@@ -37,7 +37,7 @@ def prediction(data: tuple, data_name: str, feature_set: str) -> float:
     plt.legend(loc="lower right")
 
     # Uncomment to save plot
-    # plt.savefig(f'./figures/{data_name}_{feature_set}.png')
+    # plt.savefig(f'../figures/variant_1000/{data_name}_{feature_set}.png')
 
     plt.show()
 

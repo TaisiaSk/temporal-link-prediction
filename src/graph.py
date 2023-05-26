@@ -34,6 +34,7 @@ class Graph(object):
       
         self.__edges_info = dict()
         self.__timestamps = dict()
+        self.__vertices = set()
         self.__number_of_vertices, max_vertex_id = self.__numer_of_vertices_from_file(file, timestamp_col, weight_col, 
                                                                                       number_of_lines_to_skip)
         self.__adjacent_vertices = [None for _ in range(max_vertex_id + 1)]
@@ -44,7 +45,6 @@ class Graph(object):
         for _ in range(0, number_of_lines_to_skip):
             next(file)
 
-        vertices = set()
         for line in file:
             tokens = line.split()
             v1 = int(tokens[0])
@@ -55,8 +55,8 @@ class Graph(object):
             if (w < 0):
                 continue
 
-            vertices.add(v1)
-            vertices.add(v2)
+            self.__vertices.add(v1)
+            self.__vertices.add(v2)
     
             if (timestamp not in self.__timestamps):
                 self.__timestamps[timestamp] = []
@@ -64,7 +64,7 @@ class Graph(object):
 
         file.seek(0)
 
-        return len(vertices), max(vertices)
+        return len(self.__vertices), max(self.__vertices)
 
     
     def edges_that_will_appear(self, timestamp_filter : int) -> list:
@@ -112,7 +112,7 @@ class Graph(object):
 
 
     def vertices(self) -> set:
-        return set(i for i in range(1, len(self.__adjacent_vertices)))
+        return set(self.__vertices)
 
 
     def get_edge_info(self, edge_id : int) -> list:

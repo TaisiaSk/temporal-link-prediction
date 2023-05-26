@@ -70,3 +70,4 @@ for current_dataset in datasets:
         print(f'count assort: {assort}')
 
     print(f'dataset: {file_path}\nresult: {properties_graph}\n{metrix}\nexpected: {properties_nx}')
+    
