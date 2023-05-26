@@ -25,8 +25,13 @@ def __make_max_comp(graph: Graph) :
             graph_nx.add_edge(*edge)
     return graph_nx
 
+def count_coeffs(graph: Graph):
+    avg_clust = basic_properties.get_avg_coeff(graph)
+    assort = basic_properties.get_dg_assortativity(graph)
+    return (avg_clust, assort)
+
 for current_dataset in datasets:
-    file_path = '../data/' + current_dataset['file_name']
+    file_path = '../data/main_sets/' + current_dataset['file_name']
     print(f'--- start counting basic props for {file_path}')
     number_of_lines_to_skip = current_dataset['number_of_lines_to_skip']
     timestamp_col = current_dataset['timestamp_col']
@@ -78,4 +83,3 @@ for current_dataset in datasets:
         print(f'count assort: {assort}')
 
     print(f'dataset: {file_path}\nresult: {properties_graph}\n{metrix}\nexpected: {properties_nx}')
-    
