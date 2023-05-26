@@ -60,7 +60,7 @@ def task_4(graph : Graph, properties : dict) -> tuple:
     return heading, values
 
 def task_5(dataset : dict, static : bool) -> tuple:
-    data = get_features_as_matrix(dataset, static, vectors_equalization=True, max_amount=5000)
+    data = get_features_as_matrix(dataset, static)
     feture_set = 'I' if static else 'II-A'
 
     if (data is None):
