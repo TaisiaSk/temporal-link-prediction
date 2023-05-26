@@ -29,6 +29,10 @@ def get_percentage(graph: Graph) -> float:
 
     return __percent_of_vertices(components, graph)
 
+def get_max_component_size(graph: Graph) -> int:
+    components = __get_components(graph)
+    return  __find_max_component(components)[1]
+
 # Radius, diameter and 90perc
 def get_metrics(graph: Graph, small_graph_size = 500) -> dict:
     components = __get_components(graph)
@@ -336,7 +340,14 @@ def __get_distance_properties(component, graph, small_graph_size = 500):
         for idx, v in enumerate(vertices):
             max_distances.append(__bfs_get_counts_of_vertices_on_distance(v, distances, graph))
 
-            if ((idx + 1) % 10 == 0):
+            step = 10
+            if (small_graph_size > 500):
+                step = 500
+                if (small_graph_size > 10000):
+                    step = 1000
+                    if (small_graph_size > 20000):
+                        step = 10000
+            if ((idx + 1) % step == 0):
                 print(f"{idx + 1}/{len(vertices)}")
 
         return __get_metrics_from_distances_list(distances, max_distances)
